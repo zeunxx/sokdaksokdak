@@ -25,4 +25,16 @@ interface DiaryDao {
 
     @Query("select * from diary_table where date=:date")
     fun getname(date:Int):Diary
+
+
+    @Query("INSERT INTO diary_table(keyword, date, diary_context) VALUES (:keyword, (select datetime('now', 'localtime')), :diary_context)")
+    fun insertDiaryData(keyword: String, diary_context: String)
+
+    // 날짜로 keyword 가져오기
+    //@Query("select keyword from diary_table where date=:date")
+    //fun getDataFromDate(date: Long)
+
+    // keyword, context update
+    //@Query("update keyword from diary_table where date=:date")
+    //fun getDataFromDate(date: Long)
 }

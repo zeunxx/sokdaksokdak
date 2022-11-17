@@ -11,7 +11,7 @@ data class Diary(
     @PrimaryKey
     var keyword :String,
     @ColumnInfo(name = "date")
-    val date: Int,
+    var date: Int,
     @ColumnInfo(name = "diary_context")
-    val diaryContext: String
+    var diaryContext: String
 )
