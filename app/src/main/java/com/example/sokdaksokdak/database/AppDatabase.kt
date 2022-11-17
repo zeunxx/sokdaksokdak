@@ -1,13 +1,16 @@
 package com.example.sokdaksokdak.database
 
 import android.content.Context
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 
 @Database(
     entities = [User::class, Diary::class],
-    version = 2,
+    version = 1,
     exportSchema = false
 )
 
@@ -25,7 +28,7 @@ abstract class AppDatabase: RoomDatabase() {
                     instance = Room.databaseBuilder(
                         context.applicationContext,
                         AppDatabase::class.java,
-                        "sok_database"
+                        "test"
                     )
                         .build()
                 }
