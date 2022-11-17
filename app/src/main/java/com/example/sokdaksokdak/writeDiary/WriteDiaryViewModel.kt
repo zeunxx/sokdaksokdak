@@ -1,15 +1,23 @@
 package com.example.sokdaksokdak.writeDiary
 
 import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import com.example.sokdaksokdak.database.AppDatabase
 
-class WriteDiaryViewModel: ViewModel() {
+class WriteDiaryViewModel(application: Application): AndroidViewModel(application) {
     var recommendKeyword = RecommendKeyword()
-    private var writeDiary = WriteDiary()
+    private var writeDiary = WriteDiary(application)
     // 하루에 한 번 00:00:00 에 선언하도록 -> 기본값 DB에 저장되도록 WriteDiary 에서
 
+    public fun newDiaryData(keyword:String, content:String) {
+        writeDiary.newDiaryData(keyword, content)
+    }
+    public fun insertData() {
+        writeDiary.insertDiary()
+    }
 
+    // TODO: 키워드 SharedPreference 에 저장
     public fun showKeyword(): String{
         var keywordDB = writeDiary.getKeyword()
 

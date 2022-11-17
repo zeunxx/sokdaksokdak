@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import com.example.sokdaksokdak.R
 import com.example.sokdaksokdak.database.AppDatabase
 import com.example.sokdaksokdak.databinding.FragmentDiaryBinding
 
@@ -28,7 +27,10 @@ class DiaryFragment : Fragment() {
 
         writeDiaryViewModel = ViewModelProvider(this).get(WriteDiaryViewModel::class.java)
 
-        binding.keywordTextView.text = writeDiaryViewModel.showKeyword()
+        //binding.keywordTextView.text = writeDiaryViewModel.showKeyword()
+        //writeDiaryViewModel.newDiaryData("변경 후 키워드", "변경 후 일기 내용")
+
+
         // Inflate the layout for this fragment
         return binding.root
     }
