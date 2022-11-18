@@ -1,11 +1,14 @@
-package com.example.sokdaksokdak
+package com.example.sokdaksokdak.Login
 
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import com.example.sokdaksokdak.R
+import com.example.sokdaksokdak.databinding.FragmentLoginBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
