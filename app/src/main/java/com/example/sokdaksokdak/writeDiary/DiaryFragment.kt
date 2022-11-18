@@ -30,6 +30,11 @@ class DiaryFragment : Fragment() {
         //binding.keywordTextView.text = writeDiaryViewModel.showKeyword()
         //writeDiaryViewModel.newDiaryData("변경 후 키워드", "변경 후 일기 내용")
 
+        // TODO: 1. 사용자가 일기 작성 완료 버튼 눌렀을 때, DB update 되도록 - keyword 는 SharedPreference 에서 추출하여 전달
+        // TODO: 2. SharedPreference 이용 -> 저장된 keyword 화면에 띄우기
+
+        // TODO: ?? sharedPreference 이용해서 오늘 날짜에 저장된 keyword 가 있는지 추적
+
 
         // Inflate the layout for this fragment
         return binding.root
