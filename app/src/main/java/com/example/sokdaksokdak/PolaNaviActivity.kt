@@ -18,6 +18,7 @@ private const val TAG_THEME = "theme_change_fragment"
 class PolaNaviActivity : AppCompatActivity() {
     private lateinit var binding : ActivityPolaNaviBinding
     private lateinit var db : AppDatabase
+    private var themeType:Int = 2 // 처음 테마 값
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPolaNaviBinding.inflate(layoutInflater)
@@ -29,15 +30,15 @@ class PolaNaviActivity : AppCompatActivity() {
         binding.navigationView.setOnItemSelectedListener { item->
             when(item.itemId){
                 R.id.calendarFragment->{
-                    setFragment(TAG_CALENDAR, CalendarFragment())
+                    setFragment(TAG_CALENDAR, CalendarFragment(themeType))
                     true
                 }
                 R.id.diaryFragment->{
-                    setFragment(TAG_DIARY,DiaryFragment())
+                    setFragment(TAG_DIARY,DiaryFragment(themeType))
                     true
                 }
                 R.id.mypageFragment->{
-                    setFragment(TAG_MY_PAGE,MypageFragment())
+                    setFragment(TAG_THEME,ThemeChangeFragment())
                     true
                 }
                 else -> false
@@ -46,14 +47,16 @@ class PolaNaviActivity : AppCompatActivity() {
         }
     }
 
-    
+
     private fun setFragment(tag:String, fragment: Fragment){
         val manager:FragmentManager = supportFragmentManager
         val fragTransaction = manager.beginTransaction()
 
-        if(manager.findFragmentByTag(tag)==null){
-            fragTransaction.add(R.id.mainFrameLayout,fragment,tag)
-        }
+        fragTransaction.add(R.id.mainFrameLayout,fragment,tag)
+//        if(manager.findFragmentByTag(tag)==null){
+//            fragTransaction.add(R.id.mainFrameLayout,fragment,tag)
+//        }
+
 
         val keyword = manager.findFragmentByTag(TAG_KEYWORD)
         val calendar = manager.findFragmentByTag(TAG_CALENDAR)
@@ -72,6 +75,9 @@ class PolaNaviActivity : AppCompatActivity() {
 
         if (mypage != null) {
             fragTransaction.hide(mypage)
+        }
+        if (theme != null) {
+            fragTransaction.hide(theme)
         }
 
         if (tag == TAG_CALENDAR) {
@@ -110,5 +116,20 @@ class PolaNaviActivity : AppCompatActivity() {
         }
 
         fragTransaction.commitAllowingStateLoss()
+    }
+
+    fun receiveData(diary:DiaryFragment, calendar:CalendarFragment,diaryTheme: Int){
+
+        this.themeType = diaryTheme
+        setFragment(TAG_DIARY,diary)
+        setFragment(TAG_CALENDAR,calendar)
+//        setFragment(TAG_THEME,ThemeChangeFragment())
+
+
+//        val manager:FragmentManager = supportFragmentManager
+//        val fragTransaction = manager.beginTransaction()
+//
+//        fragTransaction.add(R.id.mainFrameLayout,diary, TAG_DIARY)
+//        fragTransaction.commit()
     }
 }

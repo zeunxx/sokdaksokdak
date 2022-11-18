@@ -1,59 +1,59 @@
 package com.example.sokdaksokdak
 
 import android.os.Bundle
+import android.provider.Contacts.SettingsColumns.KEY
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.sokdaksokdak.databinding.FragmentDiaryBinding
+import com.example.sokdaksokdak.databinding.FragmentDiaryCloverBinding
+import kotlin.properties.Delegates
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class DiaryFragment(themeType:Int) : Fragment() {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [DiaryFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class DiaryFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    var themeType = themeType
+
+
+//    private var polaBinding : FragmentDiaryBinding ?= null
+//    private var cloverBinding : FragmentDiaryCloverBinding ?= null
+
+
+    companion object {
+        fun newInstance(theme: Int): DiaryFragment {
+            val fragment = DiaryFragment(theme)
+            return fragment
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_diary, container, false)
+        println("##### 테마 ######:"+themeType)
+
+        if(themeType==1)
+        {
+            var binding = FragmentDiaryBinding.inflate(layoutInflater)
+            return binding!!.root
+        }
+        else
+        {
+            var binding = FragmentDiaryCloverBinding.inflate(layoutInflater)
+            return binding!!.root
+        }
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment DiaryFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            DiaryFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
+
+
+        override fun onDestroyView() {
+//        polaBinding = null
+//        cloverBinding = null
+
+            super.onDestroyView()
+        }
 }
