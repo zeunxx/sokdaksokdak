@@ -1,21 +1,20 @@
 package com.example.sokdaksokdak.Factory
 
+import android.app.Activity
 import android.os.Bundle
-import com.example.sokdaksokdak.CalendarFragment
-import com.example.sokdaksokdak.DiaryFragment
-import com.example.sokdaksokdak.R
+import com.example.sokdaksokdak.*
 import com.example.sokdaksokdak.databinding.FragmentDiaryBinding
+import com.google.android.material.internal.ContextUtils.getActivity
 
-class CloverThemeFactory: ThemeFactory {
-    override fun createCalendar(): CalendarFragment {
-        val theme = 1
-        val clover = CalendarFragment.newInstance(theme)
-        return clover
+class CloverThemeFactory(override val activity: Any) : ThemeFactory {
+    override fun createNaviActivity() {
+        activity as PolaNaviActivity
+        activity.recreate()
     }
 
-    override fun createDiary() :DiaryFragment{
-        val theme = 1
-        val clover = DiaryFragment.newInstance(theme)
-        return clover
+    override fun createSplashActivity() {
+        activity as PolaNaviActivity
+        activity.recreate()
     }
+
 }

@@ -1,18 +1,16 @@
 package com.example.sokdaksokdak.Factory
 
-import com.example.sokdaksokdak.CalendarFragment
-import com.example.sokdaksokdak.DiaryFragment
+import com.example.sokdaksokdak.*
 
-class PolaThemeFactory:ThemeFactory {
-    override fun createDiary(): DiaryFragment {
-        val theme = 2
-        val pola = DiaryFragment.newInstance(theme)
-        return pola
+class PolaThemeFactory(override val activity: Any) :ThemeFactory {
+    override fun createNaviActivity() {
+        activity as PolaNaviActivity
+
     }
 
-    override fun createCalendar(): CalendarFragment {
-        val theme = 2
-        val pola = CalendarFragment.newInstance(theme)
-        return pola
+    override fun createSplashActivity() {
+        activity as PolaSplashActivity
+        activity.recreate()
+
     }
 }

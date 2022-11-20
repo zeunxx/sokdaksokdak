@@ -1,59 +1,47 @@
 package com.example.sokdaksokdak
 
+import android.R
+import android.content.Context
 import android.os.Bundle
-import android.provider.Contacts.SettingsColumns.KEY
-import androidx.fragment.app.Fragment
+import android.util.AttributeSet
+import android.util.TypedValue
+import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.example.sokdaksokdak.databinding.FragmentDiaryBinding
-import com.example.sokdaksokdak.databinding.FragmentDiaryCloverBinding
-import kotlin.properties.Delegates
-
-class DiaryFragment(themeType:Int) : Fragment() {
-
-    var themeType = themeType
 
 
-//    private var polaBinding : FragmentDiaryBinding ?= null
-//    private var cloverBinding : FragmentDiaryCloverBinding ?= null
+class DiaryFragment : Fragment() {
 
+    private var _binding: FragmentDiaryBinding? = null
+    private val binding get() = _binding!!
 
-    companion object {
-        fun newInstance(theme: Int): DiaryFragment {
-            val fragment = DiaryFragment(theme)
-            return fragment
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        println("##### 테마 ######:"+themeType)
+        _binding = FragmentDiaryBinding.inflate(layoutInflater)
 
-        if(themeType==1)
-        {
-            var binding = FragmentDiaryBinding.inflate(layoutInflater)
-            return binding!!.root
-        }
-        else
-        {
-            var binding = FragmentDiaryCloverBinding.inflate(layoutInflater)
-            return binding!!.root
-        }
+        val view = binding.root
+
+        return view
     }
 
 
-
-        override fun onDestroyView() {
-//        polaBinding = null
-//        cloverBinding = null
+    override fun onDestroyView() {
 
             super.onDestroyView()
         }
+
+
 }

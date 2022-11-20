@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/white"
+    android:theme="@style/AppPolaTheme"
+    android:background="?attr/android:windowBackground"
     tools:context=".MypageFragment">
 
     <LinearLayout
@@ -68,7 +68,7 @@
             android:layout_height="0dp"
             android:layout_weight="2"
             android:gravity="center"
-            android:background="@color/pola_navi"
+            android:background="?attr/colorAccent"
             android:weightSum="10"
             android:layout_marginBottom="5dp"
             android:orientation="horizontal">
@@ -97,7 +97,7 @@
             android:layout_height="0dp"
             android:layout_weight="2"
             android:gravity="center"
-            android:background="@color/pola_navi"
+            android:background="?attr/colorAccent"
             android:weightSum="10"
             android:layout_marginBottom="5dp"
             android:orientation="horizontal">
@@ -137,7 +137,7 @@
             android:layout_height="0dp"
             android:layout_weight="2"
             android:gravity="center"
-            android:background="@color/pola_navi"
+            android:background="?attr/colorAccent"
             android:weightSum="10"
             android:layout_marginBottom="5dp"
             android:orientation="horizontal">
@@ -166,7 +166,7 @@
             android:layout_height="0dp"
             android:layout_weight="2"
             android:gravity="center"
-            android:background="@color/pola_navi"
+            android:background="?attr/colorAccent"
             android:weightSum="10"
             android:layout_marginBottom="5dp"
             android:orientation="horizontal">

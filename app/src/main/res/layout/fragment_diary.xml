@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+
+    android:background="?attr/android:windowBackground"
     android:orientation="vertical"
     tools:context=".DiaryFragment">
 
@@ -13,7 +14,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:weightSum="20"
-        android:background="@drawable/diary_pola">
+        android:background="?attr/diary_back">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -46,7 +47,7 @@
                 android:textSize="45dp"
                 android:gravity="center"
                 android:textStyle="bold"
-                android:background="@drawable/pola_day_gray"
+                android:background="?attr/colorAccent"
                 android:text="1"/>
             <TextView
                 android:id="@+id/pola_month_2"
@@ -56,7 +57,7 @@
                 android:textColor="@color/pola_gray"
                 android:gravity="center"
                 android:textStyle="bold"
-                android:background="@drawable/pola_day_white"
+                android:background="?attr/colorPrimary"
                 android:textSize="45dp"
                 android:text="1"/>
             <TextView
@@ -67,7 +68,7 @@
                 android:textColor="@color/pola_white"
                 android:gravity="center"
                 android:textStyle="bold"
-                android:background="@drawable/pola_day_gray"
+                android:background="?attr/colorAccent"
                 android:textSize="45dp"
                 android:text="2"/>
             <TextView
@@ -78,7 +79,7 @@
                 android:textColor="@color/pola_gray"
                 android:gravity="center"
                 android:textStyle="bold"
-                android:background="@drawable/pola_day_white"
+                android:background="?attr/colorPrimary"
                 android:textSize="45dp"
                 android:text="4"/>
 
@@ -101,6 +102,7 @@
             android:layout_weight="2"
             android:gravity="center"
             android:textSize="20dp"
+            android:textStyle="bold"
             android:textColor="@color/pola_day_gray"
             android:text="시험" />
 
@@ -114,6 +116,7 @@
             android:layout_marginLeft="65dp"
             android:layout_marginRight="65dp"
             android:textColor="@color/pola_day_gray"
+            android:fontFamily="@font/custom_font"
             android:text="내일 열심히 하자 오늘은x"
 
             android:layout_weight="11"/>

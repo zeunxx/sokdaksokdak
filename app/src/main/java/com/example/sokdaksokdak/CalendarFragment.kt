@@ -6,23 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.sokdaksokdak.databinding.FragmentCalendarBinding
-import com.example.sokdaksokdak.databinding.FragmentCalendarCloverBinding
-import com.example.sokdaksokdak.databinding.FragmentDiaryBinding
-import com.example.sokdaksokdak.databinding.FragmentDiaryCloverBinding
 
 
-class CalendarFragment(themeType:Int) : Fragment() {
 
-    var themeType=themeType
-//    private var polaBinding : FragmentCalendarBinding?= null
-//    private var cloverBinding : FragmentCalendarCloverBinding?= null
-    companion object {
-        fun newInstance(theme:Int): CalendarFragment{
-            val fragment = CalendarFragment(theme)
-            return fragment
-        }
+class CalendarFragment : Fragment() {
+    private lateinit var binding: FragmentCalendarBinding
 
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,18 +21,9 @@ class CalendarFragment(themeType:Int) : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        println("##### 테마 ######:"+themeType)
+        var binding = FragmentCalendarBinding.inflate(layoutInflater)
+        return binding!!.root
 
-        if(themeType==1)
-        {
-            var binding = FragmentCalendarBinding.inflate(layoutInflater)
-            return binding!!.root
-        }
-        else
-        {
-            var binding = FragmentCalendarCloverBinding.inflate(layoutInflater)
-            return binding!!.root
-        }
     }
 
     override fun onDestroyView() {

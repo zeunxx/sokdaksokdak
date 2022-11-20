@@ -14,7 +14,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".ThemeChangeActivity"
+            android:exported="false" />
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"
@@ -40,8 +44,7 @@
             android:exported="true" />
         <activity
             android:name=".PolaSplashActivity"
-            android:exported="true"
-            android:theme="@style/Theme.Design.Light.NoActionBar">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
