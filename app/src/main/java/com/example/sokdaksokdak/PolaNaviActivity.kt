@@ -4,7 +4,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import com.example.sokdaksokdak.Login.LoginFragment
+import com.example.sokdaksokdak.database.AppDatabase
 import com.example.sokdaksokdak.databinding.ActivityPolaNaviBinding
+import com.example.sokdaksokdak.writeDiary.DiaryFragment
 
 private const val TAG_KEYWORD = "keyword_fragment"
 private const val TAG_CALENDAR ="calender_fragment"
@@ -15,12 +18,14 @@ private const val TAG_THEME = "theme_change_fragment"
 
 class PolaNaviActivity : AppCompatActivity() {
     private lateinit var binding : ActivityPolaNaviBinding
+    private lateinit var db : AppDatabase
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPolaNaviBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setFragment(TAG_LOGIN,LoginFragment())
+
+        setFragment(TAG_LOGIN, LoginFragment())
         binding.navigationView.setOnItemSelectedListener { item->
             when(item.itemId){
                 R.id.calendarFragment->{
@@ -40,6 +45,8 @@ class PolaNaviActivity : AppCompatActivity() {
 
         }
     }
+
+    
     private fun setFragment(tag:String, fragment: Fragment){
         val manager:FragmentManager = supportFragmentManager
         val fragTransaction = manager.beginTransaction()

@@ -4,8 +4,8 @@
     package="com.example.sokdaksokdak">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
     <application
+        android:name=".GlobalApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -31,24 +31,30 @@
                 <!-- Redirect URI: "kakao{NATIVE_APP_KEY}://oauth" -->
                 <data
                     android:host="oauth"
-                    android:scheme="@string/kakao_native_key" />
+                    android:scheme="kakaoc7795b54e50244f372d84a1c2663a365" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".PolaNaviActivity"
             android:exported="true"></activity>
         <activity
             android:name=".PolaSplashActivity"
-            android:exported="true"
-            android:theme="@style/Theme.Design.Light.NoActionBar">
+            android:theme="@style/Theme.Design.Light.NoActionBar"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity"
+            android:exported="false">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+        </activity>
     </application>
+
 
 </manifest>
