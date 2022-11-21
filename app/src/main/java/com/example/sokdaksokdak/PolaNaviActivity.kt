@@ -50,10 +50,10 @@ class PolaNaviActivity : AppCompatActivity() {
                     true
                 }
                 R.id.mypageFragment->{
-//                    setFragment(TAG_THEME,ThemeChangeFragment())
+                    setFragment(TAG_MY_PAGE,MypageFragment())
 
-                    val intent = Intent(this,ThemeChangeActivity::class.java)
-                    startActivity(intent)
+//                    val intent = Intent(this,ThemeChangeActivity::class.java)
+//                    startActivity(intent)
                     true
                 }
                 else -> false

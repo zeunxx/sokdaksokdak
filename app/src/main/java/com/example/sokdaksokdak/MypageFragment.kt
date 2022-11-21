@@ -1,5 +1,7 @@
 package com.example.sokdaksokdak
 
+import android.content.Intent
+import android.content.res.Resources
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -24,6 +26,11 @@ class MypageFragment : Fragment() {
 
 
         val binding = FragmentMypageBinding.inflate(layoutInflater)
+        binding.themeBtn.setOnClickListener {
+            val intent = Intent(activity,ThemeChangeActivity::class.java)
+            startActivity(intent)
+
+        }
         return binding.root
     }
 

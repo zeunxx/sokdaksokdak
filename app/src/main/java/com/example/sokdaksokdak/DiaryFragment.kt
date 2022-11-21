@@ -13,13 +13,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.example.sokdaksokdak.databinding.FragmentDiaryBinding
+import com.example.sokdaksokdak.databinding.FragmentMypageBinding
 
 
 class DiaryFragment : Fragment() {
-
-    private var _binding: FragmentDiaryBinding? = null
-    private val binding get() = _binding!!
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,11 +27,9 @@ class DiaryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentDiaryBinding.inflate(layoutInflater)
+        val binding = FragmentDiaryBinding.inflate(layoutInflater)
 
-        val view = binding.root
-
-        return view
+        return binding.root
     }
 
 
