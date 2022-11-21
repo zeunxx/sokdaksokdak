@@ -19,11 +19,17 @@ interface UserDao {
     @Delete
     fun delete(user: User)
 
-    @Query("INSERT INTO user_table(user_name, birth) VALUES (:user_name, :birth)")
-    fun insertUserData(user_name: String, birth: String)
+    @Query("INSERT INTO user_table(user_name, birth, social) VALUES (:user_name, :birth, :social)")
+    fun insertUserData(user_name: String, birth: String, social: String)
 
 
-    @Query("select user_name from user_table")
-    fun getName():String
+//    @Query("select user_name from user_table")
+//    fun getName():String
+
+    @Query("select social from user_table")
+    fun getSocial():String
+
+    @Query("select * from user_table where userId like :id")
+    fun getUserToId(id:Int):User
 
 }

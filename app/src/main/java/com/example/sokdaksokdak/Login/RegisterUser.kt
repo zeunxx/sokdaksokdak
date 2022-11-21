@@ -14,9 +14,18 @@ class RegisterUser(application: Application) {
     private val repository = LoginReposityory(application)
 
 
-    public fun insertUser(name:String,userbitrh:String){//db에 유저정보 넣기
-        repository.insert(User(name, userbitrh))
+    public fun insertUser(name:String,userbitrh:String,social:String){//db에 유저정보 넣기
+        repository.insert(User(name, userbitrh,social))
     }
+
+    public fun getSocial(){//db에 유저정보 넣기
+        repository.getSocial()
+    }
+
+    public fun getUserToId(userId:Int){//db에 유저정보 넣기
+        repository.getUserToId(userId)
+    }
+
 
 
 //    public fun check(name:String,userbitrh:String){ //db에 유저정보가 있는지 확인 -> 있으면 true

@@ -10,7 +10,9 @@ data class User(
     @ColumnInfo(name = "user_name")
     var userName: String?,
     @ColumnInfo(name = "birth")
-    var birth: String
+    var birth: String,
+    @ColumnInfo(name = "social")
+    var social: String
 ){
     @PrimaryKey(autoGenerate = true) var userId: Int = 0
 }

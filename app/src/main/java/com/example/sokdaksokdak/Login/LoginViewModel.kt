@@ -1,12 +1,24 @@
 package com.example.sokdaksokdak.Login
 
 import android.app.Application
+import android.content.Intent
 import android.provider.ContactsContract.Profile
 import android.util.Log
+import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.sokdaksokdak.database.User
 import com.example.sokdaksokdak.writeDiary.WriteDiary
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.GoogleAuthProvider
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
@@ -16,8 +28,20 @@ import org.apache.commons.lang3.ObjectUtils.Null
 class LoginViewModel(application: Application): AndroidViewModel(application) {
     private val context = getApplication<Application>().applicationContext
     private var registerUser = RegisterUser(application)
-    private lateinit var name : String
-    private lateinit var birth : String
+    lateinit var name: String
+    var birth : String = ""
+
+
+
+    private var authRepository: AuthRepository = AuthRepository()
+    private val _userLiveData = authRepository.userLiveData
+
+    val userLiveData: LiveData<FirebaseUser>
+        get() = _userLiveData
+
+    fun getUser(idToken: String){
+        authRepository.getUser(idToken)
+    }
 
     fun Login(social : String) {
         if (social == "kakao")
@@ -27,8 +51,13 @@ class LoginViewModel(application: Application): AndroidViewModel(application) {
     }
 
     private fun googleLogin() {
-        TODO("Not yet implemented")
     }
+
+    fun getUserName(): String {
+        val username = this.name
+        return username
+    }
+
 
     fun kakaoLogin(){
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
@@ -40,8 +69,8 @@ class LoginViewModel(application: Application): AndroidViewModel(application) {
                 UserApiClient.instance.me { user, error ->
                     if (user != null) {
                         name = user.kakaoAccount?.profile?.nickname.toString()
-                        birth = user.kakaoAccount?.birthday.toString()
-                        registerUser.insertUser(name,birth)
+                        this.birth = user.kakaoAccount?.birthday.toString()
+                        //registerUser.insertUser(name,birth,"kakao")
                     }
                 }
 
@@ -64,6 +93,15 @@ class LoginViewModel(application: Application): AndroidViewModel(application) {
                     UserApiClient.instance.loginWithKakaoAccount(context, callback = callback)
                 } else if (token != null) {
                     Log.i("성공", "카카오톡으로 로그인 성공 ${token.accessToken}")
+                    getInfo()
+                    UserApiClient.instance.me { user, error ->
+                        if (user != null) {
+                            name = user.kakaoAccount?.profile?.nickname.toString()
+                            this.birth = user.kakaoAccount?.birthday.toString()
+                            //db 데이터 넣기
+                            //registerUser.insertUser(name,birth,"kakao")
+                        }
+                    }
                }
             }
         } else {
@@ -84,6 +122,5 @@ class LoginViewModel(application: Application): AndroidViewModel(application) {
             }
         }
     }
-
 }
 

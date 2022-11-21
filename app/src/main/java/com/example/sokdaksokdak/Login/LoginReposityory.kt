@@ -19,10 +19,10 @@ class LoginReposityory(application: Application) {
         }catch(e:Exception){e.printStackTrace()}
     }
 
-    fun insertData(username:String, userbirth:String){
+    fun insertData(username:String, userbirth:String, social:String){
         try{
             val thread = Thread(Runnable {
-                userDao.insertUserData(username,userbirth)
+                userDao.insertUserData(username,userbirth,social)
             })
             thread.start()
         }catch(e:Exception){e.printStackTrace()}
@@ -35,12 +35,22 @@ class LoginReposityory(application: Application) {
             thread.start()
         }catch(e:Exception){e.printStackTrace()}
     }
-    fun getname(){
+    fun getSocial(){
         try{
             val thread = Thread(Runnable {
-                userDao.getName()
+                userDao.getSocial()
             })
             thread.start()
         }catch(e:Exception){e.printStackTrace()}
     }
+
+    fun getUserToId(userId:Int){
+        try{
+            val thread = Thread(Runnable {
+                userDao.getUserToId(userId)
+            })
+            thread.start()
+        }catch(e:Exception){e.printStackTrace()}
+    }
+
 }
