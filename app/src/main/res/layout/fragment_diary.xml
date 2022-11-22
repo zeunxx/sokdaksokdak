@@ -101,14 +101,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:gravity="center"
-<<<<<<< HEAD
             android:textSize="20dp"
             android:textStyle="bold"
-=======
             android:text="시험"
->>>>>>> ro-el
-            android:textColor="@color/pola_day_gray"
-            android:textSize="20dp" />
+            android:textColor="@color/pola_day_gray"/>
 
         <EditText
             android:id="@+id/diaryEditText"
@@ -119,14 +115,11 @@
             android:layout_marginLeft="65dp"
             android:layout_marginRight="65dp"
             android:textColor="@color/pola_day_gray"
-<<<<<<< HEAD
             android:fontFamily="@font/custom_font"
             android:text="내일 열심히 하자 오늘은x"
-=======
             android:textColorHint="@color/pola_navi"
             android:hint="일기를 작성하세요."
             android:visibility="visible"
->>>>>>> ro-el
 
             android:layout_weight="11"/>
 
