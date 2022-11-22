@@ -8,30 +8,31 @@ import com.example.sokdaksokdak.database.AppDatabase
 class WriteDiaryViewModel(application: Application): AndroidViewModel(application) {
     var recommendKeyword = RecommendKeyword()
     private var writeDiary = WriteDiary(application)
-    // 하루에 한 번 00:00:00 에 선언하도록 -> 기본값 DB에 저장되도록 WriteDiary 에서
 
     public fun insertData() {
         writeDiary.insertDiary()
+        println("successfully initialized diary data")
     }
 
     public fun newDiaryData(keyword:String, content:String) {
         writeDiary.newDiaryData(keyword, content)
     }
 
-    public fun checkDataExist(): Boolean{
-        return writeDiary.isDataExist()
+    public fun checkDataExists(): Boolean {
+        return writeDiary.isDataExists()
     }
 
-    // TODO: 키워드 SharedPreference 에 저장
-    public fun showKeyword(): String{
-        var isExists = checkDataExist()
-
-        if (!isExists) {
-            println("Insert New Data")
-            insertData()
+    public fun checkDiaryCompleted(): Boolean {
+        val content = writeDiary.getDiaryContent()
+        return if (content == "일기를 작성하세요."){
+            false
+        } else{
+            println(content)
+            true
         }
-        println("after insertData")
+    }
 
+    public fun showKeyword(): String{
         var keywordDB = writeDiary.getKeyword()
 
         println("현재 저장 keyword: " + keywordDB)
@@ -45,6 +46,10 @@ class WriteDiaryViewModel(application: Application): AndroidViewModel(applicatio
         // 만약 DB에 저장된 keyword 가
         // 기본값(키워드를 선택하세요.)이면 getRandomKeyword 호출
         // 기본값이 아니면, getKeyword 호출
+    }
+
+    public fun showContent(): String{
+        return writeDiary.getDiaryContent()
     }
 
     private fun getRandomKeyword(): String {

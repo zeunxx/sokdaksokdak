@@ -1,10 +1,8 @@
 package com.example.sokdaksokdak.writeDiary
 
 import android.app.Application
-import androidx.lifecycle.LiveData
 import com.example.sokdaksokdak.database.AppDatabase
 import com.example.sokdaksokdak.database.Diary
-import com.example.sokdaksokdak.database.DiaryDao
 
 class DiaryRepository(application: Application) {
     private val database = AppDatabase.getInstance(application)!!
@@ -52,14 +50,13 @@ class DiaryRepository(application: Application) {
         return todayKeyword
     }
 
-    // TODO: 반환이 제대로 안 되는 문제
-    fun isDataExist(): Boolean {
-        var isExist: Boolean = false
-        println("isExist: " + isExist)
+    fun isDataExists(): Boolean {
+        var isExists: Boolean = false
+        println("isExists: " + isExists)
 
         val r = Runnable {
-            isExist = diaryDao.isDataExist()
-            println("isExist: " + isExist)
+            isExists = diaryDao.isDataExist()
+            println("isExists: " + isExists)
         }
 
         val thread = Thread(r)
@@ -67,10 +64,10 @@ class DiaryRepository(application: Application) {
         try {
             thread.join()
         } catch (e: Exception) {
-            println("thread join exception in getTodayKeyword")
+            println("thread join exception in isDataExists")
         }
-        println("isExist: " + isExist)
-        return isExist
+        println("isExist: " + isExists)
+        return isExists
     }
 
     fun deleteData() {
@@ -81,5 +78,24 @@ class DiaryRepository(application: Application) {
         thread.start()
     }
 
+    fun getDiaryContent(): String {
+        var diaryContent: String = "Get Today Diary Content"
+
+        val r = Runnable {
+            diaryContent = diaryDao.getDiaryContent()
+            println("\ndiaryContent from DB in Runnable: "+diaryContent)
+        }
+
+        val thread = Thread(r)
+        thread.start()
+        try {
+            thread.join()
+        } catch (e: Exception) {
+            println("thread join exception in getDiaryContent")
+        }
+
+        return diaryContent
+
+    }
 
 }
