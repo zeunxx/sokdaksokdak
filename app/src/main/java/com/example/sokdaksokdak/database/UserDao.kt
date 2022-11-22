@@ -23,8 +23,8 @@ interface UserDao {
     fun getBirthByName(userName: String): Int
 
     @Query("select user_name from user_table")
-    fun getnameList():List<String>
+    fun getNameList():List<String>
 
     @Query("select * from user_table where user_name=:name")
-    fun getname(name:String):User
+    fun getName(name: String):User
 }

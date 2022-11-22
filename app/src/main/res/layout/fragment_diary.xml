@@ -6,7 +6,7 @@
 
     android:background="?attr/android:windowBackground"
     android:orientation="vertical"
-    tools:context=".DiaryFragment">
+    tools:context=".writeDiary.DiaryFragment">
 
 
     <LinearLayout
@@ -101,11 +101,14 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:gravity="center"
+<<<<<<< HEAD
             android:textSize="20dp"
             android:textStyle="bold"
+=======
+            android:text="시험"
+>>>>>>> ro-el
             android:textColor="@color/pola_day_gray"
-            android:text="시험" />
-
+            android:textSize="20dp" />
 
         <EditText
             android:id="@+id/diaryEditText"
@@ -116,10 +119,45 @@
             android:layout_marginLeft="65dp"
             android:layout_marginRight="65dp"
             android:textColor="@color/pola_day_gray"
+<<<<<<< HEAD
             android:fontFamily="@font/custom_font"
             android:text="내일 열심히 하자 오늘은x"
+=======
+            android:textColorHint="@color/pola_navi"
+            android:hint="일기를 작성하세요."
+            android:visibility="visible"
+>>>>>>> ro-el
 
             android:layout_weight="11"/>
+
+        <TextView
+            android:id="@+id/diaryTextView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:ems="10"
+            android:gravity="center"
+            android:layout_marginLeft="65dp"
+            android:layout_marginRight="65dp"
+            android:textColor="@color/pola_day_gray"
+            android:textColorHint="@color/pola_navi"
+            android:textSize="9pt"
+            android:hint="일기를 작성하세요."
+            android:visibility="gone"
+
+            android:layout_weight="11"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:weightSum="10">
+        <Button
+            android:id="@+id/diaryDoneBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="완료"/>
+    </LinearLayout>
+
         <Space
             android:layout_width="match_parent"
             android:layout_height="0dp"

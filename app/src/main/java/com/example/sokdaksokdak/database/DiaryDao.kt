@@ -24,5 +24,25 @@ interface DiaryDao {
     fun getDate(): List<Int>
 
     @Query("select * from diary_table where date=:date")
-    fun getname(date:Int):Diary
+    fun getDateData(date:Int):Diary
+
+    @Query("delete from diary_table")
+    fun deleteData()
+
+    @Query("INSERT INTO diary_table(keyword, date, diary_context) VALUES (:keyword, (select date('now', 'localtime')), :diary_context)")
+    fun insertDiaryData(keyword: String, diary_context: String)
+
+    @Query("UPDATE diary_table SET keyword=:keyword, diary_context=:diary_context WHERE date=(select date('now', 'localtime'))")
+    fun updateDiaryData(keyword: String, diary_context: String)
+
+    // 날짜로 keyword 가져오기
+    @Query("select keyword from diary_table where date=(select date('now', 'localtime'))")
+    fun getTodayKeyword(): String
+
+    // 날짜로 keyword 가져오기
+    @Query("select exists (select keyword from diary_table where date=(select date('now', 'localtime')))")
+    fun isDataExist(): Boolean
+
+    @Query("select diary_context from diary_table where date=(select date('now', 'localtime'))")
+    fun getDiaryContent(): String
 }

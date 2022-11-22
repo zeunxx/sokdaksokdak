@@ -8,10 +8,12 @@ import java.util.Date
 
 @Entity(tableName = "diary_table")
 data class Diary(
-    @PrimaryKey
+    @ColumnInfo(name = "keyword")
     var keyword :String,
     @ColumnInfo(name = "date")
-    val date: Int,
+    var date: Int,
     @ColumnInfo(name = "diary_context")
-    val diaryContext: String
-)
+    var diaryContext: String
+){
+    @PrimaryKey(autoGenerate = true) var diaryId: Int = 0
+}

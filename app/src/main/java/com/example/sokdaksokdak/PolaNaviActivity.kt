@@ -9,6 +9,7 @@ import com.example.sokdaksokdak.Factory.DefaultPreferenceManager
 import com.example.sokdaksokdak.Login.LoginFragment
 import com.example.sokdaksokdak.database.AppDatabase
 import com.example.sokdaksokdak.databinding.ActivityPolaNaviBinding
+import com.example.sokdaksokdak.writeDiary.DiaryFragment
 
 private const val TAG_KEYWORD = "keyword_fragment"
 private const val TAG_CALENDAR ="calender_fragment"
@@ -39,6 +40,7 @@ class PolaNaviActivity : AppCompatActivity() {
 
 
         setFragment(TAG_LOGIN, LoginFragment())
+
         binding.navigationView.setOnItemSelectedListener { item->
             when(item.itemId){
                 R.id.calendarFragment->{
@@ -46,7 +48,7 @@ class PolaNaviActivity : AppCompatActivity() {
                     true
                 }
                 R.id.diaryFragment->{
-                    setFragment(TAG_DIARY,DiaryFragment())
+                    setFragment(TAG_DIARY, DiaryFragment())
                     true
                 }
                 R.id.mypageFragment->{
