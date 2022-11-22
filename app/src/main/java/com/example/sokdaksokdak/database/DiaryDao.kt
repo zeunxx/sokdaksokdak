@@ -24,7 +24,7 @@ interface DiaryDao {
     fun getDate(): List<Int>
 
     @Query("select * from diary_table where date=:date")
-    fun getName(date:Int):Diary
+    fun getDateData(date:Int):Diary
 
     @Query("delete from diary_table")
     fun deleteData()
