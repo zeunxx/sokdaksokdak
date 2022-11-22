@@ -43,6 +43,7 @@ class DiaryFragment : Fragment() {
          * */
         binding.keywordTextView.text = writeDiaryViewModel.showKeyword()
 
+
         // newDiaryData
         /**
          * 사용자가 일기 작성 완료 버튼 눌렀을 때 - DB update
@@ -54,15 +55,15 @@ class DiaryFragment : Fragment() {
 
             writeDiaryViewModel.newDiaryData(keyword, content)
 
+            // 일기 작성 완료 직후, 버튼 없애고 EditView -> TextView 변경
             binding.diaryDoneBtn.visibility = View.GONE
+            binding.diaryTextView.visibility = View.VISIBLE
+            binding.diaryEditText.visibility = View.GONE
+            binding.diaryTextView.setText(content)
 
 
         }
 
-
-        /* TODO: 2. SharedPreference 이용 -> 저장된 keyword 화면에 띄우기
-
-           TODO: ?? sharedPreference 이용해서 오늘 날짜에 저장된 keyword 가 있는지 추적 */
 
         // Inflate the layout for this fragment
         return binding.root

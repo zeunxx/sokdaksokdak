@@ -116,6 +116,23 @@
             android:textColor="@color/pola_day_gray"
             android:textColorHint="@color/pola_navi"
             android:hint="일기를 작성하세요."
+            android:visibility="visible"
+
+            android:layout_weight="11"/>
+
+        <TextView
+            android:id="@+id/diaryTextView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:ems="10"
+            android:gravity="center"
+            android:layout_marginLeft="65dp"
+            android:layout_marginRight="65dp"
+            android:textColor="@color/pola_day_gray"
+            android:textColorHint="@color/pola_navi"
+            android:textSize="9pt"
+            android:hint="일기를 작성하세요."
+            android:visibility="gone"
 
             android:layout_weight="11"/>
     <LinearLayout
