@@ -1,11 +1,14 @@
 package com.example.sokdaksokdak
 
+import android.app.Activity
 import android.content.Intent
+import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.sokdaksokdak.Factory.CloverThemeFactory
 import com.example.sokdaksokdak.Factory.DefaultPreferenceManager
 import com.example.sokdaksokdak.Factory.PolaThemeFactory
+import com.example.sokdaksokdak.Factory.ThemeFactory
 import com.example.sokdaksokdak.databinding.ActivityPolaNaviBinding
 import com.example.sokdaksokdak.databinding.ActivityThemeChangeBinding
 import com.example.sokdaksokdak.ui.main.ThemeChangeFragment2
@@ -27,17 +30,15 @@ class ThemeChangeActivity : AppCompatActivity() {
             when(i){
                 R.id.pola_theme_radioBtn->{
                     pref.setThemeType("pola_theme")
-//                    PolaThemeFactory(PolaNaviActivity()).createNaviActivity()
-//                    PolaThemeFactory(PolaSplashActivity()).createSplashActivity()
-                    val intent = Intent(this,PolaNaviActivity::class.java)
-                    startActivity(intent)
+                    PolaThemeFactory().createNaviActivity(this)
+                    PolaThemeFactory().createSplashActivity(this)
+
                 }
                 R.id.clover_theme_radioBtn->{
                     pref.setThemeType("clover_theme")
-//                    CloverThemeFactory(PolaNaviActivity()).createNaviActivity()
-//                    CloverThemeFactory(PolaSplashActivity()).createSplashActivity()
-                    val intent = Intent(this,PolaNaviActivity::class.java)
-                    startActivity(intent)
+                    CloverThemeFactory().createNaviActivity(this)
+                    CloverThemeFactory().createSplashActivity(this)
+
                 }
             }
         }

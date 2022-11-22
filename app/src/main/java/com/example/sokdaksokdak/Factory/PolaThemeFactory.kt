@@ -1,16 +1,18 @@
 package com.example.sokdaksokdak.Factory
 
+import android.content.Context
+import android.content.Intent
+import androidx.core.content.ContextCompat.startActivity
 import com.example.sokdaksokdak.*
 
-class PolaThemeFactory(override val activity: Any) :ThemeFactory {
-    override fun createNaviActivity() {
-        activity as PolaNaviActivity
-
+class PolaThemeFactory() :ThemeFactory {
+    override fun createNaviActivity(context: Context) {
+        val intent = Intent(context, PolaNaviActivity::class.java)
+        context.startActivity(intent)
     }
 
-    override fun createSplashActivity() {
-        activity as PolaSplashActivity
-        activity.recreate()
-
+    override fun createSplashActivity(context: Context) {
+        val intent = Intent(context, PolaSplashActivity::class.java)
+        context.startActivity(intent)
     }
 }

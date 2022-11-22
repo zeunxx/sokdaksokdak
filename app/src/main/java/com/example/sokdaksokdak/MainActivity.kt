@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity() {
     private fun refreshLogin() {
         CoroutineScope(Dispatchers.Main).launch {
             val data = CoroutineScope(Dispatchers.IO).async {
-                db.userDao().getname("이태혁")
+                db.userDao().getName("이태혁")
             }.await()
 
             if (data != null) {

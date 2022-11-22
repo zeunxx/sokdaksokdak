@@ -11,8 +11,7 @@ import com.example.sokdaksokdak.database.AppDatabase
 import com.example.sokdaksokdak.databinding.ActivityPolaNaviBinding
 import com.example.sokdaksokdak.writeDiary.DiaryFragment
 
-private const val TAG_KEYWORD = "keyword_fragment"
-private const val TAG_CALENDAR ="calender_fragment"
+
 private const val TAG_DIARY = "diary_fragment"
 private const val TAG_LOGIN = "login_fragment"
 private const val TAG_MY_PAGE = "mypage_fragment"
@@ -43,10 +42,6 @@ class PolaNaviActivity : AppCompatActivity() {
 
         binding.navigationView.setOnItemSelectedListener { item->
             when(item.itemId){
-                R.id.calendarFragment->{
-                    setFragment(TAG_CALENDAR, CalendarFragment())
-                    true
-                }
                 R.id.diaryFragment->{
                     setFragment(TAG_DIARY, DiaryFragment())
                     true
@@ -54,8 +49,6 @@ class PolaNaviActivity : AppCompatActivity() {
                 R.id.mypageFragment->{
                     setFragment(TAG_MY_PAGE,MypageFragment())
 
-//                    val intent = Intent(this,ThemeChangeActivity::class.java)
-//                    startActivity(intent)
                     true
                 }
                 else -> false
@@ -97,16 +90,11 @@ class PolaNaviActivity : AppCompatActivity() {
         }
 
 
-        val keyword = manager.findFragmentByTag(TAG_KEYWORD)
-        val calendar = manager.findFragmentByTag(TAG_CALENDAR)
         val diary = manager.findFragmentByTag(TAG_DIARY)
         val mypage = manager.findFragmentByTag(TAG_MY_PAGE)
         val login = manager.findFragmentByTag(TAG_LOGIN)
         val theme = manager.findFragmentByTag(TAG_THEME)
 
-        if (calendar != null) {
-            fragTransaction.hide(calendar)
-        }
 
         if (diary != null) {
             fragTransaction.hide(diary)
@@ -119,21 +107,13 @@ class PolaNaviActivity : AppCompatActivity() {
             fragTransaction.hide(theme)
         }
 
-        if (tag == TAG_CALENDAR) {
-            if (calendar != null) {
-                fragTransaction.show(calendar)
-            }
-        } else if (tag == TAG_DIARY) {
+         if (tag == TAG_DIARY) {
             if (diary != null) {
                 fragTransaction.show(diary)
             }
         } else if (tag == TAG_MY_PAGE) {
             if (mypage != null) {
                 fragTransaction.show(mypage)
-            }
-        } else if (tag == TAG_KEYWORD) {
-            if (keyword != null) {
-                fragTransaction.show(keyword)
             }
         } else if (tag == TAG_LOGIN) {
             if (login != null) {
@@ -148,9 +128,5 @@ class PolaNaviActivity : AppCompatActivity() {
         fragTransaction.commitAllowingStateLoss()
     }
 
-    fun receiveData(theme: String?) {
-        println(theme)
-        onResume()
-    }
 }
 
