@@ -27,6 +27,12 @@ class DiaryFragment : Fragment() {
         writeDiaryViewModel = ViewModelProvider(this).get(WriteDiaryViewModel::class.java)
 
         // TODO: 사용자의 keyword 추천 여부 반영 - 예외 처리
+        // TODO: 앱 실행 시, 현재 날짜에 대한 DB Data 존재 및 작성 완료 상태 확인
+        //       -> 존재
+        //          -> keyword & 내용 모두 작성 완료된 상태인지 확인
+        //          -> keyword 만 갱신 된 상태일 때
+        //       -> 존재하지 않을 때, 키워드 불러오기부터
+
 
         // writeDiaryViewModel.deleteData()
 
