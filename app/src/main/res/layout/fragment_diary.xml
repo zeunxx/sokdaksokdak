@@ -100,10 +100,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:gravity="center"
-            android:textSize="20dp"
+            android:text="시험"
             android:textColor="@color/pola_day_gray"
-            android:text="시험" />
-
+            android:textSize="20dp" />
 
         <EditText
             android:id="@+id/diaryEditText"
