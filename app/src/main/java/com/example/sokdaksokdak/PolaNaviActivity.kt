@@ -29,10 +29,10 @@ class PolaNaviActivity : AppCompatActivity() {
         setFragment(TAG_LOGIN, LoginFragment())
         binding.navigationView.setOnItemSelectedListener { item->
             when(item.itemId){
-                R.id.calendarFragment->{
-                    setFragment(TAG_CALENDAR, CalendarFragment())
-                    true
-                }
+//                R.id.calendarFragment->{
+//                    setFragment(TAG_CALENDAR, CalendarFragment())
+//                    true
+//                }
                 R.id.diaryFragment->{
                     setFragment(TAG_DIARY, DiaryFragment())
                     true

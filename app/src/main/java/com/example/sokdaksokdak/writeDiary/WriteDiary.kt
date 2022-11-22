@@ -13,25 +13,31 @@ class WriteDiary(application: Application) {
     init {
         this.keyword = "키워드를 선택하세요."
         this.content = "일기를 작성하세요."
+    }
 
-        // TODO: 초기화 후 DB에 저장까지 됨을 확인 _ Random Keyword SharedPreference 로 저장.
-        // 일기 작성 완료 누른 후 DB에 update
+    public fun createTodayDiary() {
         insertDiary()
     }
 
     public fun getKeyword(): String{
-        var keywordDB = "키워드를 선택하세요." // DB 에서 날짜로 keyword 가져오기
+        var keywordDB = repository.getTodayKeyword() // DB 에서 날짜로 keyword 가져오기
         // Diary Dao 이용
         return keywordDB
+    }
+
+    public fun updateKeyword(keyword:String){
+        this.keyword = keyword
+        updateDiary()
     }
 
     public fun newDiaryData(keyword:String, content:String){
         this.keyword = keyword
         this.content = content
+
         updateDiary() // 일기 작성 완료했을 때 update 하는 함수
     }
     public fun insertDiary(){
-        repository.insertData(this.keyword, this.content)
+        repository.insertData("키워드를 선택하세요.", "일기를 작성하세요.")
         // DataBase 에 keyword 혹은 content update
         //db.diaryDao().insertDiaryData(this.keyword, this.content)
         //println("success insert")
@@ -41,5 +47,14 @@ class WriteDiary(application: Application) {
     public fun updateDiary(){
         repository.updateData(this.keyword, this.content)
         // DataBase 에 keyword 혹은 content update
+    }
+
+    fun isDataExist(): Boolean {
+        return repository.isDataExist()
+
+    }
+
+    fun deleteData() {
+        repository.deleteData()
     }
 }
