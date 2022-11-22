@@ -43,4 +43,7 @@ interface DiaryDao {
     // 날짜로 keyword 가져오기
     @Query("select exists (select keyword from diary_table where date=(select date('now', 'localtime')))")
     fun isDataExist(): Boolean
+
+    @Query("select diary_context from diary_table where date=(select date('now', 'localtime'))")
+    fun getDiaryContent(): String
 }

@@ -49,12 +49,17 @@ class WriteDiary(application: Application) {
         // DataBase 에 keyword 혹은 content update
     }
 
-    fun isDataExist(): Boolean {
-        return repository.isDataExist()
+    fun isDataExists(): Boolean {
+        return repository.isDataExists()
 
     }
 
     fun deleteData() {
         repository.deleteData()
+
+    }
+
+    fun getDiaryContent(): String {
+        return repository.getDiaryContent()
     }
 }

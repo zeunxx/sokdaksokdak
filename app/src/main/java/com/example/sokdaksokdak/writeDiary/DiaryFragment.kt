@@ -26,29 +26,49 @@ class DiaryFragment : Fragment() {
 
         writeDiaryViewModel = ViewModelProvider(this).get(WriteDiaryViewModel::class.java)
 
+        // Diary Table 비우기 - 확인을 위함
+        // writeDiaryViewModel.deleteData()
+
         // TODO: 사용자의 keyword 추천 여부 반영 - 예외 처리
         // TODO: 앱 실행 시, 현재 날짜에 대한 DB Data 존재 및 작성 완료 상태 확인
+        //       -> 존재하지 않을 때
+        //          -> insertData
+        //          -> 존재할 때의 순서 시행
         //       -> 존재
         //          -> keyword & 내용 모두 작성 완료된 상태인지 확인
         //          -> keyword 만 갱신 된 상태일 때
-        //       -> 존재하지 않을 때, 키워드 불러오기부터
 
 
-        // writeDiaryViewModel.deleteData()
-
-        // showKeyword
+        // checkDataExists
         /**
          * 1. 오늘 날짜에 해당하는 일기 데이터가 존재하는지 확인
          *    1.1. 없는 경우 - 새로운 데이터 추가
-         *    1.2. 있는 경우 - keyword 가져오기
+         * */
+        if (!writeDiaryViewModel.checkDataExists()){ // 오늘의 Data 존재하지 않을 때
+            writeDiaryViewModel.insertData()
+        }
+
+
+        // showKeyword
+        // TODO: keyword & 내용 모두 작성 완료된 상태인지 확인
+        if (writeDiaryViewModel.checkDiaryCompleted()){
+            binding.diaryDoneBtn.visibility = View.GONE
+            binding.diaryTextView.visibility = View.VISIBLE
+            binding.diaryEditText.visibility = View.GONE
+            binding.diaryTextView.setText(writeDiaryViewModel.showContent())
+        }
+
+        // TODO: keyword 만 갱신 된 상태일 때
+        /**
+         * 1. 오늘 날짜에 해당하는 keyword 가져오기
          * 2. 가져온 keyword 가
          *    2.1. 초기 값일 때 - random 으로 키워드 가져오기
          *         2.1.1. 가져온 keyword DB 에 update
          *    2.2. 이미 갱신된 값일 때 - 바로 반환
          * 3. 화면에 keyword 표시
          * */
-        binding.keywordTextView.text = writeDiaryViewModel.showKeyword()
 
+        binding.keywordTextView.text = writeDiaryViewModel.showKeyword()
 
         // newDiaryData
         /**
