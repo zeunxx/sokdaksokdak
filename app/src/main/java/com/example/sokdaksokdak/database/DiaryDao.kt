@@ -35,11 +35,17 @@ interface DiaryDao {
 
     @Query("UPDATE diary_table SET keyword=:keyword, diary_context=:diary_context WHERE date=(select date('now', 'localtime'))")
     fun updateDiaryData(keyword: String, diary_context: String)
+
     // 날짜로 keyword 가져오기
-    //@Query("select keyword from diary_table where date=:date")
-    //fun getDataFromDate(date: Long)
+    @Query("select keyword from diary_table where date=(select date('now', 'localtime'))")
+    fun getTodayKeyword(): String
+
+    // 날짜로 keyword 가져오기
+    @Query("select exists (select keyword from diary_table where date=(select date('now', 'localtime')))")
+    fun isDataExist(): Boolean
 
     // keyword, context update
     //@Query("update keyword from diary_table where date=:date")
     //fun getDataFromDate(date: Long)
+
 }

@@ -22,6 +22,7 @@ class PolaNaviActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setFragment(TAG_LOGIN,LoginFragment())
+
         binding.navigationView.setOnItemSelectedListener { item->
             when(item.itemId){
                 R.id.calendarFragment->{

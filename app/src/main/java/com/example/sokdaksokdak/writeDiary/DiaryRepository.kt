@@ -21,7 +21,6 @@ class DiaryRepository(application: Application) {
         thread.start()
     }
 
-    // TODO: 일기 작성 완료했을 때 update 하는 함수
     fun updateData(keyword: String, content: String){
         val r = Runnable {
             diaryDao.updateDiaryData(keyword, content)
@@ -31,5 +30,53 @@ class DiaryRepository(application: Application) {
         thread.start()
     }
 
+    // TODO: 반환이 제대로 안 되는 문제
+    fun getTodayKeyword(): String {
+        var todayKeyword: String = "Get Today Keyword"
+
+        val r = Runnable {
+            todayKeyword = diaryDao.getTodayKeyword()
+            println("\ntodayKeyword from DB in Runnable: "+todayKeyword)
+        }
+
+        val thread = Thread(r)
+        thread.start()
+        try {
+            thread.join()
+        } catch (e: Exception) {
+            println("thread join exception in getTodayKeyword")
+        }
+
+        return todayKeyword
+    }
+
+    // TODO: 반환이 제대로 안 되는 문제
+    fun isDataExist(): Boolean {
+        var isExist: Boolean = false
+        println("isExist: " + isExist)
+
+        val r = Runnable {
+            isExist = diaryDao.isDataExist()
+            println("isExist: " + isExist)
+        }
+
+        val thread = Thread(r)
+        thread.start()
+        try {
+            thread.join()
+        } catch (e: Exception) {
+            println("thread join exception in getTodayKeyword")
+        }
+        println("isExist: " + isExist)
+        return isExist
+    }
+
+    fun deleteData() {
+        val r = Runnable {
+            diaryDao.deleteData()
+        }
+        val thread = Thread(r)
+        thread.start()
+    }
 
 }
