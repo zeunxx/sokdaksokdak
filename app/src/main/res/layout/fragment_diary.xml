@@ -28,6 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="10dp"/>
         <LinearLayout
+            android:id="@+id/btnforCal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -38,17 +39,19 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.3">
             </Space>
+
             <TextView
                 android:id="@+id/monthTextView"
-                android:layout_weight="1.8"
                 android:layout_width="0dp"
                 android:layout_height="65dp"
+
+                android:layout_weight="1.8"
+                android:background="?attr/colorAccent"
+                android:gravity="center"
+                android:text="11"
                 android:textColor="@color/pola_white"
                 android:textSize="45dp"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:background="?attr/colorAccent"
-                android:text="11"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/dayTextView"

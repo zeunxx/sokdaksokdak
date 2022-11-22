@@ -2,11 +2,13 @@ package com.example.sokdaksokdak.writeDiary
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import com.example.sokdaksokdak.Diary.CalendarFragment
 import com.example.sokdaksokdak.databinding.FragmentDiaryBinding
 
 class DiaryFragment : Fragment() {
@@ -96,6 +98,37 @@ class DiaryFragment : Fragment() {
             binding.diaryEditText.visibility = View.GONE
             binding.diaryTextView.setText(content)
 
+
+        }
+        binding.btnforCal.setOnClickListener{
+            val datePickerFragment = CalendarFragment()
+            val supportFragment = requireActivity().supportFragmentManager
+            supportFragment.setFragmentResultListener(
+                "KEY",
+                viewLifecycleOwner
+            ){
+                    resultKey, bundle->
+                if(resultKey == "KEY"){
+
+                    val selectedDate = bundle.getString("SELECTED_DATE")?.split("-")
+
+                    val day = selectedDate?.get(0)
+                    val month = selectedDate?.get(1)
+                    if (day != null) {
+                        Log.e("log", day)
+                    }
+                    if (month != null) {
+                        Log.e("log", month)
+                    }
+
+                    binding.monthTextView.text = month
+                    binding.dayTextView.text = day
+                }
+                else{
+                    Log.e("log", "fail")
+                }
+            }
+            datePickerFragment.show(supportFragment,"CalendarFragment")
 
         }
 
