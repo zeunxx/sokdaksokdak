@@ -1,0 +1,514 @@
+Index: app/src/main/java/com/example/sokdaksokdak/Login/LoginFragment.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.sokdaksokdak.Login\n\nimport android.R.attr\nimport android.content.Intent\nimport android.os.Bundle\nimport android.util.Log\nimport android.view.LayoutInflater\nimport android.view.View\nimport android.view.ViewGroup\nimport androidx.fragment.app.Fragment\nimport androidx.lifecycle.ViewModelProvider\nimport com.example.sokdaksokdak.MainActivity\nimport com.example.sokdaksokdak.PolaSplashActivity\nimport com.example.sokdaksokdak.R\nimport com.example.sokdaksokdak.databinding.FragmentLoginBinding\nimport com.google.android.gms.auth.api.signin.GoogleSignIn\nimport com.google.android.gms.auth.api.signin.GoogleSignInAccount\nimport com.google.android.gms.auth.api.signin.GoogleSignInClient\nimport com.google.android.gms.auth.api.signin.GoogleSignInOptions\nimport com.google.android.gms.common.api.ApiException\nimport com.google.android.gms.tasks.Task\nimport com.google.firebase.auth.FirebaseAuth\nimport com.google.firebase.auth.FirebaseUser\nimport com.google.firebase.auth.GoogleAuthProvider\n\n\nclass LoginFragment : Fragment() {\n    private lateinit var loginViewModel : LoginViewModel\n    private lateinit var binding: FragmentLoginBinding\n\n    private val auth: FirebaseAuth = FirebaseAuth.getInstance()\n    val GOOGLE_REQUEST_CODE = 99\n    val TAG = \"googleLogin\"\n    private lateinit var googleSignInClient: GoogleSignInClient\n\n    override fun onCreate(savedInstanceState: Bundle?) {\n        super.onCreate(savedInstanceState)\n    }\n\n    override fun onCreateView(\n        inflater: LayoutInflater, container: ViewGroup?,\n        savedInstanceState: Bundle?\n    ): View? {\n        binding = FragmentLoginBinding.inflate(inflater, container, false)\n        loginViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)\n\n        binding.kakaoLoginButton.setOnClickListener{\n            loginViewModel.Login(\"kakao\")\n        }\n\n        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)\n            .requestIdToken(getString(R.string.default_web_client_id))\n            .requestEmail()\n            .build()\n        googleSignInClient = context?.let { GoogleSignIn.getClient(it,gso) }!!\n        binding.googleLoginButton.setOnClickListener {\n//            loginViewModel.Login(\"google\")\n            googleLogin()\n        }\n\n        return binding.root\n    }\n\n    fun googleLogin() {\n        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)\n            .requestIdToken(getString(R.string.default_web_client_id))\n            .requestEmail()\n            .build()\n\n        googleSignInClient = context?.let { GoogleSignIn.getClient(it,gso) }!!\n        googleSignIn()\n    }\n\n    // 구글 회원가입\n    private fun googleSignIn() {\n        val signInIntent = googleSignInClient.signInIntent\n        startActivityForResult(signInIntent, GOOGLE_REQUEST_CODE)\n    }\n\n    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {\n        super.onActivityResult(requestCode, resultCode, data)\n\n        if (requestCode == GOOGLE_REQUEST_CODE) {\n            val task = GoogleSignIn.getSignedInAccountFromIntent(data)\n            try {\n                val account = task.getResult(ApiException::class.java)\n                firebaseAuthWithGoogle(account)\n                Log.i(\"google login\",account.givenName + \"구글 로그인 성공\")\n            } catch (e: ApiException) {\n                //Toast.makeText(this, \"구글 회원가입에 실패하였습니다: ${e.message}\", Toast.LENGTH_SHORT).show()\n                Log.i(\"google login\",\"구글 로그인 실패\")\n            }\n        } else {\n            /*no-op*/\n        }\n    }\n\n    private fun firebaseAuthWithGoogle(account: GoogleSignInAccount?) {\n        val credential = GoogleAuthProvider.getCredential(account?.idToken, null)\n        auth.signInWithCredential(credential).addOnCompleteListener { task ->\n            if (task.isSuccessful) {\n                Log.d(TAG, \"signInWithCredential:success\")\n                val user = auth.currentUser\n//                toMainActivity(auth.currentUser)\n            }\n        }\n    }\n\n\n    private fun toMainActivity(user: FirebaseUser?) {\n        if (user != null) {\n            startActivity(Intent(context, PolaSplashActivity::class.java))\n        }\n    }\n\n//    public override fun onStart() {\n//        super.onStart()\n//        //유저가 로그인되어있는지 확인\n//        val currentUser = auth.currentUser\n//        moveMain(currentUser)\n//    }\n\n    //유저가 로그인하면 메인액티비티로 이동\n    private fun moveMain(user: FirebaseUser?) {\n        if (user != null) {\n            startActivity(Intent(context, MainActivity::class.java))\n        }\n    }\n\n\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/sokdaksokdak/Login/LoginFragment.kt b/app/src/main/java/com/example/sokdaksokdak/Login/LoginFragment.kt
+--- a/app/src/main/java/com/example/sokdaksokdak/Login/LoginFragment.kt	(revision 5b6f57a952759a51522a1ca3b8a80e1de085949e)
++++ b/app/src/main/java/com/example/sokdaksokdak/Login/LoginFragment.kt	(date 1669364641461)
+@@ -1,31 +1,35 @@
+ package com.example.sokdaksokdak.Login
+ 
+-import android.R.attr
+ import android.content.Intent
+ import android.os.Bundle
+ import android.util.Log
+ import android.view.LayoutInflater
+ import android.view.View
+ import android.view.ViewGroup
++import androidx.activity.result.contract.ActivityResultContracts
++import androidx.appcompat.app.AppCompatActivity
+ import androidx.fragment.app.Fragment
+-import androidx.lifecycle.ViewModelProvider
+-import com.example.sokdaksokdak.MainActivity
+-import com.example.sokdaksokdak.PolaSplashActivity
+-import com.example.sokdaksokdak.R
++import com.example.sokdaksokdak.*
+ import com.example.sokdaksokdak.databinding.FragmentLoginBinding
+ import com.google.android.gms.auth.api.signin.GoogleSignIn
+ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+ import com.google.android.gms.auth.api.signin.GoogleSignInClient
+ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+ import com.google.android.gms.common.api.ApiException
+-import com.google.android.gms.tasks.Task
+ import com.google.firebase.auth.FirebaseAuth
+ import com.google.firebase.auth.FirebaseUser
+ import com.google.firebase.auth.GoogleAuthProvider
++import com.kakao.sdk.user.UserApiClient
+ 
+ 
+ class LoginFragment : Fragment() {
+     private lateinit var loginViewModel : LoginViewModel
++    private lateinit var kakaoLogin : KakaoLogin
++    private lateinit var kakaoSocial: KakaoSocial
++    private lateinit var googleSocial: GoogleSocial
++
++    //private lateinit var googleLogin : GoogleLogin
++
+     private lateinit var binding: FragmentLoginBinding
+ 
+     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+@@ -42,22 +46,34 @@
+         savedInstanceState: Bundle?
+     ): View? {
+         binding = FragmentLoginBinding.inflate(inflater, container, false)
+-        loginViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
++
++        val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
++                result ->
++            if (result.resultCode == AppCompatActivity.RESULT_OK) {
++                val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
++                try {
++                    val account = task.getResult(ApiException::class.java)
++                    firebaseAuthWithGoogle(account)
++                    Log.i("google login",account.givenName + "구글 로그인 성공")
++                } catch (e: ApiException) {
++                    //Toast.makeText(this, "구글 회원가입에 실패하였습니다: ${e.message}", Toast.LENGTH_SHORT).show()
++                    Log.i("google login","구글 로그인 실패")
++                }
++            }
++        }
+ 
+         binding.kakaoLoginButton.setOnClickListener{
+-            loginViewModel.Login("kakao")
++            kakaoSocial = KakaoSocial()
++            val user = UserLogin(kakaoSocial)
++            user.login(context)
+         }
+ 
+-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+-            .requestIdToken(getString(R.string.default_web_client_id))
+-            .requestEmail()
+-            .build()
+-        googleSignInClient = context?.let { GoogleSignIn.getClient(it,gso) }!!
+         binding.googleLoginButton.setOnClickListener {
+-//            loginViewModel.Login("google")
+-            googleLogin()
++            googleSocial = GoogleSocial()
++            val user = UserLogin(googleSocial)
++            user.login(context)
++//            launcher.launch(googleSignInClient.signInIntent)
+         }
+-
+         return binding.root
+     }
+ 
+@@ -101,7 +117,7 @@
+             if (task.isSuccessful) {
+                 Log.d(TAG, "signInWithCredential:success")
+                 val user = auth.currentUser
+-//                toMainActivity(auth.currentUser)
++                toMainActivity(auth.currentUser)
+             }
+         }
+     }
+@@ -113,19 +129,28 @@
+         }
+     }
+ 
+-//    public override fun onStart() {
+-//        super.onStart()
+-//        //유저가 로그인되어있는지 확인
+-//        val currentUser = auth.currentUser
+-//        moveMain(currentUser)
+-//    }
++    public override fun onStart() {
++        super.onStart()
++        //유저가 로그인되어있는지 확인
++        val currentUser = auth.currentUser
++        toMainActivity(currentUser)
++    }
+ 
+-    //유저가 로그인하면 메인액티비티로 이동
+-    private fun moveMain(user: FirebaseUser?) {
+-        if (user != null) {
+-            startActivity(Intent(context, MainActivity::class.java))
++    //유저가 카카오 로그인하면 메인액티비티로 이동
++    private fun moveMain() {
++        startActivity(Intent(context, PolaSplashActivity::class.java))
++    }
++
++    fun kakaoCheck(){
++        Log.d("로그인 화면", "카카오 로그인 확인")
++        UserApiClient.instance.accessTokenInfo { tokenInfo, error ->
++            if (error != null) {
++                Log.d("로그인 화면", "다시 로그인 시도해주세요")
++            } else if (tokenInfo != null) {
++                Log.d("로그인 화면", "메인 화면으로 이동")
++                moveMain()
++            }
+         }
+     }
+-
+ 
+ }
+\ No newline at end of file
+Index: app/src/main/java/com/example/sokdaksokdak/Login/LoginViewModel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.sokdaksokdak.Login\n\nimport android.app.Application\nimport android.content.Intent\nimport android.provider.ContactsContract.Profile\nimport android.util.Log\nimport android.view.View\nimport android.widget.Toast\nimport androidx.lifecycle.AndroidViewModel\nimport androidx.lifecycle.LiveData\nimport androidx.lifecycle.ViewModel\nimport com.example.sokdaksokdak.database.User\nimport com.example.sokdaksokdak.writeDiary.WriteDiary\nimport com.google.android.gms.auth.api.signin.GoogleSignIn\nimport com.google.android.gms.auth.api.signin.GoogleSignInAccount\nimport com.google.android.gms.auth.api.signin.GoogleSignInClient\nimport com.google.android.gms.auth.api.signin.GoogleSignInOptions\nimport com.google.android.gms.common.api.ApiException\nimport com.google.firebase.auth.FirebaseAuth\nimport com.google.firebase.auth.FirebaseUser\nimport com.google.firebase.auth.GoogleAuthProvider\nimport com.kakao.sdk.auth.model.OAuthToken\nimport com.kakao.sdk.common.model.ClientError\nimport com.kakao.sdk.common.model.ClientErrorCause\nimport com.kakao.sdk.user.UserApiClient\nimport org.apache.commons.lang3.ObjectUtils.Null\n\nclass LoginViewModel(application: Application): AndroidViewModel(application) {\n    private val context = getApplication<Application>().applicationContext\n    private var registerUser = RegisterUser(application)\n    lateinit var name: String\n    var birth : String = \"\"\n\n\n\n    private var authRepository: AuthRepository = AuthRepository()\n    private val _userLiveData = authRepository.userLiveData\n\n    val userLiveData: LiveData<FirebaseUser>\n        get() = _userLiveData\n\n    fun getUser(idToken: String){\n        authRepository.getUser(idToken)\n    }\n\n    fun Login(social : String) {\n        if (social == \"kakao\")\n            kakaoLogin();\n        else if(social == \"google\")\n            googleLogin()\n    }\n\n    private fun googleLogin() {\n    }\n\n    fun getUserName(): String {\n        val username = this.name\n        return username\n    }\n\n\n    fun kakaoLogin(){\n        val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->\n            if (error != null) {\n                Log.e(\"실패\", \"카카오계정으로 로그인 실패\", error)\n            } else if (token != null) {\n                Log.i(\"성공\", \"카카오계정으로 로그인 성공 ${token.accessToken}\")\n                getInfo()\n                UserApiClient.instance.me { user, error ->\n                    if (user != null) {\n                        name = user.kakaoAccount?.profile?.nickname.toString()\n                        this.birth = user.kakaoAccount?.birthday.toString()\n                        //registerUser.insertUser(name,birth,\"kakao\")\n                    }\n                }\n\n            }\n        }\n        // kakao login에는 카카오톡, 카카오계정 로그인 두가지\n        // 카카오톡 설치되어 있으면 이를 우선으로\n        if (UserApiClient.instance.isKakaoTalkLoginAvailable(context)) {\n            UserApiClient.instance.loginWithKakaoTalk(context) { token, error ->\n                if (error != null) {\n                    Log.e(\"실패\", \"카카오톡으로 로그인 실패\", error)\n\n                    // 사용자가 카카오톡 설치 후 디바이스 권한 요청 화면에서 로그인을 취소한 경우,\n                    // 의도적인 로그인 취소로 보고 카카오계정으로 로그인 시도 없이 로그인 취소로 처리 (예: 뒤로 가기)\n                    if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {\n                        return@loginWithKakaoTalk\n                    }\n\n                    // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인 시도\n                    UserApiClient.instance.loginWithKakaoAccount(context, callback = callback)\n                } else if (token != null) {\n                    Log.i(\"성공\", \"카카오톡으로 로그인 성공 ${token.accessToken}\")\n                    getInfo()\n                    UserApiClient.instance.me { user, error ->\n                        if (user != null) {\n                            name = user.kakaoAccount?.profile?.nickname.toString()\n                            this.birth = user.kakaoAccount?.birthday.toString()\n                            //db 데이터 넣기\n                            //registerUser.insertUser(name,birth,\"kakao\")\n                        }\n                    }\n               }\n            }\n        } else {\n            UserApiClient.instance.loginWithKakaoAccount(context, callback = callback)\n        }\n\n    }\n    fun getInfo() {\n        UserApiClient.instance.me { user, error ->\n            if (error != null) {\n                Log.e(\"정보 실패\", \"사용자 정보 요청 실패\", error)\n            } else if (user != null) {\n                Log.i(\n                    \"정보 성공\", \"사용자 정보 요청 성공\" +\n                            \"\\n닉네임: ${user.kakaoAccount?.profile?.nickname}\" +\n                            \"\\n생일: ${user.kakaoAccount?.birthday}\"\n                )\n            }\n        }\n    }\n}\n\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/sokdaksokdak/Login/LoginViewModel.kt b/app/src/main/java/com/example/sokdaksokdak/Login/LoginViewModel.kt
+--- a/app/src/main/java/com/example/sokdaksokdak/Login/LoginViewModel.kt	(revision 5b6f57a952759a51522a1ca3b8a80e1de085949e)
++++ b/app/src/main/java/com/example/sokdaksokdak/Login/LoginViewModel.kt	(date 1669101807054)
+@@ -6,9 +6,11 @@
+ import android.util.Log
+ import android.view.View
+ import android.widget.Toast
++import androidx.core.content.ContextCompat.startActivity
+ import androidx.lifecycle.AndroidViewModel
+ import androidx.lifecycle.LiveData
+ import androidx.lifecycle.ViewModel
++import com.example.sokdaksokdak.PolaSplashActivity
+ import com.example.sokdaksokdak.database.User
+ import com.example.sokdaksokdak.writeDiary.WriteDiary
+ import com.google.android.gms.auth.api.signin.GoogleSignIn
+@@ -62,7 +64,7 @@
+     fun kakaoLogin(){
+         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
+             if (error != null) {
+-                Log.e("실패", "카카오계정으로 로그인 실패", error)
++                Log.e("실패1", "카카오계정으로 로그인 실패", error)
+             } else if (token != null) {
+                 Log.i("성공", "카카오계정으로 로그인 성공 ${token.accessToken}")
+                 getInfo()
+@@ -81,7 +83,7 @@
+         if (UserApiClient.instance.isKakaoTalkLoginAvailable(context)) {
+             UserApiClient.instance.loginWithKakaoTalk(context) { token, error ->
+                 if (error != null) {
+-                    Log.e("실패", "카카오톡으로 로그인 실패", error)
++                    Log.e("실패2", "카카오톡으로 로그인 실패", error)
+ 
+                     // 사용자가 카카오톡 설치 후 디바이스 권한 요청 화면에서 로그인을 취소한 경우,
+                     // 의도적인 로그인 취소로 보고 카카오계정으로 로그인 시도 없이 로그인 취소로 처리 (예: 뒤로 가기)
+Index: .idea/shelf/Uncommitted_changes_before_Checkout_at_2022-11-12__11_07__Changes_.xml
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Checkout_at_2022-11-12__11_07__Changes_.xml b/.idea/shelf/Uncommitted_changes_before_Checkout_at_2022-11-12__11_07__Changes_.xml
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Checkout_at_2022-11-12__11_07__Changes_.xml	(revision 5b6f57a952759a51522a1ca3b8a80e1de085949e)
++++ /dev/null	(revision 5b6f57a952759a51522a1ca3b8a80e1de085949e)
+@@ -1,4 +0,0 @@
+-<changelist name="Uncommitted_changes_before_Checkout_at_2022-11-12_오후_11_07_[Changes]" date="1668262053268" recycled="false" toDelete="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2022-11-12_오후_11_07_[Changes]/shelved.patch" />
+-  <option name="DESCRIPTION" value="Uncommitted changes before Checkout at 2022-11-12 오후 11:07 [Changes]" />
+-</changelist>
+\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Checkout_at_2022-11-12_오후_11_07_[Changes]/shelved.patch
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Checkout_at_2022-11-12_오후_11_07_[Changes]/shelved.patch b/.idea/shelf/Uncommitted_changes_before_Checkout_at_2022-11-12_오후_11_07_[Changes]/shelved.patch
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Checkout_at_2022-11-12_오후_11_07_[Changes]/shelved.patch	(revision 5b6f57a952759a51522a1ca3b8a80e1de085949e)
++++ /dev/null	(revision 5b6f57a952759a51522a1ca3b8a80e1de085949e)
+@@ -1,23 +0,0 @@
+-Index: .idea/misc.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"DesignSurface\">\r\n    <option name=\"filePathToZoomLevelMap\">\r\n      <map>\r\n        <entry key=\"..\\:/Users/82105/AndroidStudioProjects/sokdaksokdak/app/src/main/res/drawable/menu_click_color.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/Users/82105/AndroidStudioProjects/sokdaksokdak/app/src/main/res/layout/activity_main.xml\" value=\"0.175\" />\r\n        <entry key=\"..\\:/Users/82105/AndroidStudioProjects/sokdaksokdak/app/src/main/res/layout/activity_main_pola.xml\" value=\"0.1203125\" />\r\n        <entry key=\"..\\:/Users/82105/AndroidStudioProjects/sokdaksokdak/app/src/main/res/layout/activity_navi.xml\" value=\"0.16666666666666666\" />\r\n        <entry key=\"..\\:/Users/82105/AndroidStudioProjects/sokdaksokdak/app/src/main/res/layout/activity_pola_navi.xml\" value=\"0.22\" />\r\n        <entry key=\"..\\:/Users/82105/AndroidStudioProjects/sokdaksokdak/app/src/main/res/layout/activity_pola_splash.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/Users/82105/AndroidStudioProjects/sokdaksokdak/app/src/main/res/layout/activity_splash.xml\" value=\"0.16666666666666666\" />\r\n        <entry key=\"..\\:/Users/82105/AndroidStudioProjects/sokdaksokdak/app/src/main/res/layout/calendar_day_layour.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/Users/82105/AndroidStudioProjects/sokdaksokdak/app/src/main/res/layout/fragment_calendar.xml\" value=\"0.22\" />\r\n        <entry key=\"..\\:/Users/82105/AndroidStudioProjects/sokdaksokdak/app/src/main/res/layout/fragment_diary.xml\" value=\"0.16666666666666666\" />\r\n        <entry key=\"..\\:/Users/82105/AndroidStudioProjects/sokdaksokdak/app/src/main/res/layout/fragment_keyword.xml\" value=\"0.22\" />\r\n        <entry key=\"..\\:/Users/82105/AndroidStudioProjects/sokdaksokdak/app/src/main/res/layout/fragment_login.xml\" value=\"0.175\" />\r\n        <entry key=\"..\\:/Users/82105/AndroidStudioProjects/sokdaksokdak/app/src/main/res/layout/fragment_mypage.xml\" value=\"0.22\" />\r\n        <entry key=\"..\\:/Users/82105/AndroidStudioProjects/sokdaksokdak/app/src/main/res/layout/fragment_theme_change.xml\" value=\"0.22\" />\r\n        <entry key=\"..\\:/Users/82105/AndroidStudioProjects/sokdaksokdak/app/src/main/res/menu/navi_menu.xml\" value=\"0.22\" />\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_11\" default=\"true\" project-jdk-name=\"Android Studio default JDK\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/build/classes\" />\r\n  </component>\r\n  <component name=\"ProjectType\">\r\n    <option name=\"id\" value=\"Android\" />\r\n  </component>\r\n</project>
+-===================================================================
+-diff --git a/.idea/misc.xml b/.idea/misc.xml
+---- a/.idea/misc.xml	
+-+++ b/.idea/misc.xml	
+-@@ -3,6 +3,14 @@
+-   <component name="DesignSurface">
+-     <option name="filePathToZoomLevelMap">
+-       <map>
+-+        <entry key="..\:/Users/82105/AndroidStudioProjects/architectureProject/sokdaksokdak/app/src/main/res/layout/activity_main.xml" value="0.175" />
+-+        <entry key="..\:/Users/82105/AndroidStudioProjects/architectureProject/sokdaksokdak/app/src/main/res/layout/activity_pola_navi.xml" value="0.175" />
+-+        <entry key="..\:/Users/82105/AndroidStudioProjects/architectureProject/sokdaksokdak/app/src/main/res/layout/fragment_calendar.xml" value="0.175" />
+-+        <entry key="..\:/Users/82105/AndroidStudioProjects/architectureProject/sokdaksokdak/app/src/main/res/layout/fragment_diary.xml" value="0.175" />
+-+        <entry key="..\:/Users/82105/AndroidStudioProjects/architectureProject/sokdaksokdak/app/src/main/res/layout/fragment_keyword.xml" value="0.175" />
+-+        <entry key="..\:/Users/82105/AndroidStudioProjects/architectureProject/sokdaksokdak/app/src/main/res/layout/fragment_login.xml" value="0.175" />
+-+        <entry key="..\:/Users/82105/AndroidStudioProjects/architectureProject/sokdaksokdak/app/src/main/res/layout/fragment_mypage.xml" value="0.175" />
+-+        <entry key="..\:/Users/82105/AndroidStudioProjects/architectureProject/sokdaksokdak/app/src/main/res/layout/fragment_theme_change.xml" value="0.175" />
+-         <entry key="..\:/Users/82105/AndroidStudioProjects/sokdaksokdak/app/src/main/res/drawable/menu_click_color.xml" value="0.1" />
+-         <entry key="..\:/Users/82105/AndroidStudioProjects/sokdaksokdak/app/src/main/res/layout/activity_main.xml" value="0.175" />
+-         <entry key="..\:/Users/82105/AndroidStudioProjects/sokdaksokdak/app/src/main/res/layout/activity_main_pola.xml" value="0.1203125" />
+Index: app/src/main/java/com/example/sokdaksokdak/MypageFragment.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.sokdaksokdak\n\nimport android.content.Intent\nimport android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP\nimport android.os.Bundle\nimport android.util.Log\nimport androidx.fragment.app.Fragment\nimport android.view.LayoutInflater\nimport android.view.View\nimport android.view.ViewGroup\nimport androidx.lifecycle.ViewModelProvider\nimport com.example.sokdaksokdak.Login.LoginViewModel\nimport com.example.sokdaksokdak.Login.RegisterUser\nimport com.example.sokdaksokdak.databinding.FragmentDiaryBinding\nimport com.example.sokdaksokdak.databinding.FragmentLoginBinding\nimport com.example.sokdaksokdak.databinding.FragmentMypageBinding\nimport com.google.android.gms.auth.api.signin.GoogleSignIn\nimport com.google.android.gms.auth.api.signin.GoogleSignInClient\nimport com.google.android.gms.auth.api.signin.GoogleSignInOptions\nimport com.google.firebase.auth.FirebaseAuth\nimport com.kakao.sdk.user.UserApiClient\n\n// TODO: Rename parameter arguments, choose names that match\n// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER\nprivate const val ARG_PARAM1 = \"param1\"\nprivate const val ARG_PARAM2 = \"param2\"\n\n/**\n * A simple [Fragment] subclass.\n * Use the [MypageFragment.newInstance] factory method to\n * create an instance of this fragment.\n */\nclass MypageFragment : Fragment() {\n    // TODO: Rename and change types of parameters\n    private lateinit var loginViewModel : LoginViewModel\n    private lateinit var binding: FragmentMypageBinding\n    var auth : FirebaseAuth?= null\n    var googleSignInClient : GoogleSignInClient?= null\n\n\n\n    override fun onCreate(savedInstanceState: Bundle?) {\n        super.onCreate(savedInstanceState)\n    }\n\n    override fun onCreateView(\n        inflater: LayoutInflater, container: ViewGroup?,\n        savedInstanceState: Bundle?\n    ): View? {\n        // Inflate the layout for this fragment\n        binding = FragmentMypageBinding.inflate(inflater, container, false)\n        loginViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)\n\n\n        UserApiClient.instance.accessTokenInfo { tokenInfo, error ->\n            if (error != null) {\n                //google\n                var gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)\n                    .requestIdToken(getString(R.string.default_web_client_id))\n                    .requestEmail()\n                    .build()\n                googleSignInClient = context?.let { GoogleSignIn.getClient(it, gso) }\n\n                // firebaseauth를 사용하기 위한 인스턴스 get\n                auth = FirebaseAuth.getInstance()\n\n                binding.mypageName.text = FirebaseAuth.getInstance().currentUser?.displayName\n                // 로그아웃\n                binding.logoutBtn.setOnClickListener {\n                    FirebaseAuth.getInstance().signOut()\n                    googleSignInClient?.signOut()\n                    Log.d(\"구글\",\"로그아웃 성공\")\n\n                    var logoutIntent = Intent (context, PolaNaviActivity::class.java)\n                    logoutIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK\n                    startActivity(logoutIntent)\n\n                }\n                //탈퇴\n                binding.secessionBtn.setOnClickListener{\n                    FirebaseAuth.getInstance().signOut()\n                    googleSignInClient?.revokeAccess()\n                    auth!!.currentUser?.delete()\n                    Log.d(\"구글\",\"탈퇴 성공\")\n\n                    var logoutIntent = Intent (context, PolaNaviActivity::class.java)\n                    logoutIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK\n                    startActivity(logoutIntent)\n                }\n            } else if(tokenInfo != null) {\n                //kakao\n                UserApiClient.instance.me { user, error ->\n                    if (user != null) {\n                        var name = user.kakaoAccount?.profile?.nickname.toString()\n                        var birth = user.kakaoAccount?.birthday.toString()\n                        Log.d(\"이름\",\"이름 : \"+name)\n                        binding.mypageName.text = name\n                        binding.mypageBirth.text = birth\n                    }\n                }\n                // 로그아웃\n                binding.logoutBtn.setOnClickListener {\n                    UserApiClient.instance.logout { error ->\n                        if (error != null) {\n                            Log.d(\"카카오\", \" 로그아웃 실패\")\n                        }else {\n                            Log.d(\"카카오\", \"로그아웃 성공\")\n                        }\n                        val intent = Intent(context, PolaNaviActivity::class.java)\n                        startActivity(intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP))\n                    }\n                }\n                //탈퇴\n                binding.secessionBtn.setOnClickListener{\n                    UserApiClient.instance.unlink { error ->\n                        if (error != null) {\n                            Log.d(\"카카오\", \"탈퇴 실패\")\n                        }else {\n                            Log.d(\"카카오\", \" 탈퇴 성공\")\n                            //db 데이터 삭제\n                            val intent = Intent(context, PolaNaviActivity::class.java)\n                            startActivity(intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP))\n                        }\n                    }\n                }\n\n            }\n        }\n        return binding.root\n    }\n\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/sokdaksokdak/MypageFragment.kt b/app/src/main/java/com/example/sokdaksokdak/MypageFragment.kt
+--- a/app/src/main/java/com/example/sokdaksokdak/MypageFragment.kt	(revision 5b6f57a952759a51522a1ca3b8a80e1de085949e)
++++ b/app/src/main/java/com/example/sokdaksokdak/MypageFragment.kt	(date 1669096462019)
+@@ -1,4 +1,6 @@
+ package com.example.sokdaksokdak
++import com.example.sokdaksokdak.PolaNaviActivity
++import com.example.sokdaksokdak.R
+ 
+ import android.content.Intent
+ import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
+@@ -65,6 +67,7 @@
+                 auth = FirebaseAuth.getInstance()
+ 
+                 binding.mypageName.text = FirebaseAuth.getInstance().currentUser?.displayName
++                binding.mypageBirth.visibility = View.INVISIBLE
+                 // 로그아웃
+                 binding.logoutBtn.setOnClickListener {
+                     FirebaseAuth.getInstance().signOut()
+@@ -93,7 +96,9 @@
+                     if (user != null) {
+                         var name = user.kakaoAccount?.profile?.nickname.toString()
+                         var birth = user.kakaoAccount?.birthday.toString()
++                        //var birthyear = user.kakaoAccount?.birthyear.toString()
+                         Log.d("이름","이름 : "+name)
++                        binding.mypageBirth.visibility = View.VISIBLE
+                         binding.mypageName.text = name
+                         binding.mypageBirth.text = birth
+                     }
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    xmlns:tools=\"http://schemas.android.com/tools\"\n    package=\"com.example.sokdaksokdak\">\n\n    <uses-permission android:name=\"android.permission.INTERNET\" />\n    <application\n        android:name=\".GlobalApplication\"\n        android:allowBackup=\"true\"\n        android:dataExtractionRules=\"@xml/data_extraction_rules\"\n        android:fullBackupContent=\"@xml/backup_rules\"\n        android:icon=\"@mipmap/ic_launcher\"\n        android:label=\"@string/app_name\"\n        android:roundIcon=\"@mipmap/ic_launcher_round\"\n        android:supportsRtl=\"true\"\n        android:theme=\"@style/Theme.AppCompat.NoActionBar\"\n        tools:targetApi=\"31\">\n        <meta-data\n            android:name=\"com.kakao.sdk.AppKey\"\n            android:value=\"@string/kakao_app_key\" />\n\n        <activity\n            android:name=\"com.kakao.sdk.auth.AuthCodeHandlerActivity\"\n            android:exported=\"true\">\n            <intent-filter>\n                <action android:name=\"android.intent.action.VIEW\" />\n\n                <category android:name=\"android.intent.category.DEFAULT\" />\n                <category android:name=\"android.intent.category.BROWSABLE\" />\n\n                <!-- Redirect URI: \"kakao{NATIVE_APP_KEY}://oauth\" -->\n                <data\n                    android:host=\"oauth\"\n                    android:scheme=\"kakaoc7795b54e50244f372d84a1c2663a365\" />\n            </intent-filter>\n        </activity>\n\n        <activity\n            android:name=\".PolaNaviActivity\"\n            android:exported=\"true\"></activity>\n        <activity\n            android:name=\".PolaSplashActivity\"\n            android:theme=\"@style/Theme.Design.Light.NoActionBar\"\n            android:exported=\"true\">\n            <intent-filter>\n                <action android:name=\"android.intent.action.MAIN\" />\n                <category android:name=\"android.intent.category.LAUNCHER\" />\n            </intent-filter>\n        </activity>\n        <activity android:name=\".MainActivity\"\n            android:exported=\"false\">\n<!--            <intent-filter>-->\n<!--                <action android:name=\"android.intent.action.MAIN\" />-->\n<!--                <category android:name=\"android.intent.category.LAUNCHER\" />-->\n<!--            </intent-filter>-->\n        </activity>\n    </application>\n\n\n</manifest>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
+--- a/app/src/main/AndroidManifest.xml	(revision 5b6f57a952759a51522a1ca3b8a80e1de085949e)
++++ b/app/src/main/AndroidManifest.xml	(date 1669360303188)
+@@ -4,6 +4,7 @@
+     package="com.example.sokdaksokdak">
+ 
+     <uses-permission android:name="android.permission.INTERNET" />
++
+     <application
+         android:name=".GlobalApplication"
+         android:allowBackup="true"
+@@ -15,6 +16,21 @@
+         android:supportsRtl="true"
+         android:theme="@style/Theme.AppCompat.NoActionBar"
+         tools:targetApi="31">
++        <activity
++            android:name=".GoogleSocial"
++            android:exported="false">
++            <meta-data
++                android:name="android.app.lib_name"
++                android:value="" />
++        </activity>
++        <activity
++            android:name=".KakaoSocial"
++            android:exported="false">
++            <meta-data
++                android:name="android.app.lib_name"
++                android:value="" />
++        </activity>
++
+         <meta-data
+             android:name="com.kakao.sdk.AppKey"
+             android:value="@string/kakao_app_key" />
+@@ -34,27 +50,28 @@
+                     android:scheme="kakaoc7795b54e50244f372d84a1c2663a365" />
+             </intent-filter>
+         </activity>
+-
+         <activity
+             android:name=".PolaNaviActivity"
+-            android:exported="true"></activity>
++            android:exported="true" />
+         <activity
+             android:name=".PolaSplashActivity"
+-            android:theme="@style/Theme.Design.Light.NoActionBar"
+-            android:exported="true">
++            android:exported="true"
++            android:theme="@style/Theme.Design.Light.NoActionBar">
+             <intent-filter>
+                 <action android:name="android.intent.action.MAIN" />
++
+                 <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
+         </activity>
+-        <activity android:name=".MainActivity"
++        <activity
++            android:name=".MainActivity"
+             android:exported="false">
+-<!--            <intent-filter>-->
+-<!--                <action android:name="android.intent.action.MAIN" />-->
+-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+-<!--            </intent-filter>-->
++
++            <!-- <intent-filter> -->
++            <!-- <action android:name="android.intent.action.MAIN" /> -->
++            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
++            <!-- </intent-filter> -->
+         </activity>
+     </application>
+ 
+-
+ </manifest>
+\ No newline at end of file
+Index: app/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>plugins {\n    id 'com.android.application'\n    id 'org.jetbrains.kotlin.android'\n    //google_login\n    id 'com.google.gms.google-services'\n}\napply plugin: 'kotlin-android'\napply plugin: 'kotlin-kapt'\n\nandroid {\n    compileSdk 33\n    viewBinding {\n        enabled true\n    }\n\n    defaultConfig {\n        applicationId \"com.example.sokdaksokdak\"\n        minSdk 21\n        targetSdk 33\n        versionCode 1\n        versionName \"1.0\"\n\n        testInstrumentationRunner \"androidx.test.runner.AndroidJUnitRunner\"\n    }\n\n    buildTypes {\n        release {\n            minifyEnabled false\n            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\n        }\n    }\n    compileOptions {\n        sourceCompatibility JavaVersion.VERSION_1_8\n        targetCompatibility JavaVersion.VERSION_1_8\n    }\n    kotlinOptions {\n        jvmTarget = '1.8'\n    }\n}\n\ndependencies {\n    implementation 'androidx.core:core-ktx:1.7.0'\n    implementation 'androidx.appcompat:appcompat:1.4.2'\n    implementation 'com.google.android.material:material:1.6.1'\n    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'\n    implementation 'com.google.firebase:firebase-auth-ktx:21.1.0'\n    implementation 'com.google.android.gms:play-services-auth:20.1.0'\n    testImplementation 'junit:junit:4.13.2'\n    androidTestImplementation 'androidx.test.ext:junit:1.1.3'\n    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'\n    implementation \"com.kakao.sdk:v2-all:2.11.2\" // 전체 모듈 설치, 2.11.0 버전부터 지원\n    implementation \"com.kakao.sdk:v2-user:2.11.2\" // 카카오 로그인\n    implementation \"androidx.core:core-ktx:+\"\n    implementation \"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version\"\n    //RoomDB\n    def room_version = \"2.3.0\"\n    implementation \"androidx.room:room-runtime:$room_version\"\n    kapt \"androidx.room:room-compiler:$room_version\"\n    implementation \"androidx.room:room-ktx:$room_version\"\n    kapt \"org.xerial:sqlite-jdbc:3.34.0\"\n    //Google_login\n    implementation platform('com.google.firebase:firebase-bom:31.1.0')\n    implementation 'com.google.firebase:firebase-analytics-ktx'\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/build.gradle b/app/build.gradle
+--- a/app/build.gradle	(revision 5b6f57a952759a51522a1ca3b8a80e1de085949e)
++++ b/app/build.gradle	(date 1669095295214)
+@@ -44,7 +44,7 @@
+     implementation 'com.google.android.material:material:1.6.1'
+     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+     implementation 'com.google.firebase:firebase-auth-ktx:21.1.0'
+-    implementation 'com.google.android.gms:play-services-auth:20.1.0'
++    implementation 'com.google.android.gms:play-services-auth:20.0.1'
+     testImplementation 'junit:junit:4.13.2'
+     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+Index: app/src/main/java/com/example/sokdaksokdak/PolaNaviActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.sokdaksokdak\n\nimport androidx.appcompat.app.AppCompatActivity\nimport android.os.Bundle\nimport androidx.fragment.app.Fragment\nimport androidx.fragment.app.FragmentManager\nimport com.example.sokdaksokdak.Login.LoginFragment\nimport com.example.sokdaksokdak.database.AppDatabase\nimport com.example.sokdaksokdak.databinding.ActivityPolaNaviBinding\nimport com.example.sokdaksokdak.writeDiary.DiaryFragment\n\nprivate const val TAG_KEYWORD = \"keyword_fragment\"\nprivate const val TAG_CALENDAR =\"calender_fragment\"\nprivate const val TAG_DIARY = \"diary_fragment\"\nprivate const val TAG_LOGIN = \"login_fragment\"\nprivate const val TAG_MY_PAGE = \"mypage_fragment\"\nprivate const val TAG_THEME = \"theme_change_fragment\"\n\nclass PolaNaviActivity : AppCompatActivity() {\n    private lateinit var binding : ActivityPolaNaviBinding\n    private lateinit var db : AppDatabase\n    override fun onCreate(savedInstanceState: Bundle?) {\n        super.onCreate(savedInstanceState)\n        binding = ActivityPolaNaviBinding.inflate(layoutInflater)\n        setContentView(binding.root)\n\n\n        setFragment(TAG_LOGIN, LoginFragment())\n        binding.navigationView.setOnItemSelectedListener { item->\n            when(item.itemId){\n                R.id.calendarFragment->{\n                    setFragment(TAG_CALENDAR, CalendarFragment())\n                    true\n                }\n                R.id.diaryFragment->{\n                    setFragment(TAG_DIARY,DiaryFragment())\n                    true\n                }\n                R.id.mypageFragment->{\n                    setFragment(TAG_MY_PAGE,MypageFragment())\n                    true\n                }\n                else -> false\n            }\n\n        }\n    }\n\n    \n    private fun setFragment(tag:String, fragment: Fragment){\n        val manager:FragmentManager = supportFragmentManager\n        val fragTransaction = manager.beginTransaction()\n\n        if(manager.findFragmentByTag(tag)==null){\n            fragTransaction.add(R.id.mainFrameLayout,fragment,tag)\n        }\n\n        val keyword = manager.findFragmentByTag(TAG_KEYWORD)\n        val calendar = manager.findFragmentByTag(TAG_CALENDAR)\n        val diary = manager.findFragmentByTag(TAG_DIARY)\n        val mypage = manager.findFragmentByTag(TAG_MY_PAGE)\n        val login = manager.findFragmentByTag(TAG_LOGIN)\n        val theme = manager.findFragmentByTag(TAG_THEME)\n\n        if (calendar != null){\n            fragTransaction.hide(calendar)\n        }\n\n        if (diary != null){\n            fragTransaction.hide(diary)\n        }\n\n        if (mypage != null) {\n            fragTransaction.hide(mypage)\n        }\n\n        if (tag == TAG_CALENDAR) {\n            if (calendar!=null){\n                fragTransaction.show(calendar)\n            }\n        }\n        else if (tag == TAG_DIARY) {\n            if (diary != null) {\n                fragTransaction.show(diary)\n            }\n        }\n\n        else if (tag == TAG_MY_PAGE){\n            if (mypage != null){\n                fragTransaction.show(mypage)\n            }\n        }\n\n        else if(tag== TAG_KEYWORD){\n            if(keyword!=null){\n                fragTransaction.show(keyword)\n            }\n        }\n\n        else if(tag== TAG_LOGIN){\n            if(login!=null){\n                fragTransaction.show(login)\n            }\n        }\n\n        else if(tag== TAG_THEME){\n            if(theme!=null){\n                fragTransaction.show(theme)\n            }\n        }\n\n        fragTransaction.commitAllowingStateLoss()\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/sokdaksokdak/PolaNaviActivity.kt b/app/src/main/java/com/example/sokdaksokdak/PolaNaviActivity.kt
+--- a/app/src/main/java/com/example/sokdaksokdak/PolaNaviActivity.kt	(revision 5b6f57a952759a51522a1ca3b8a80e1de085949e)
++++ b/app/src/main/java/com/example/sokdaksokdak/PolaNaviActivity.kt	(date 1669270574044)
+@@ -1,13 +1,22 @@
+ package com.example.sokdaksokdak
+ 
++import android.content.Context
++import android.content.Intent
+ import androidx.appcompat.app.AppCompatActivity
+ import android.os.Bundle
++import android.util.Log
++import android.view.View
+ import androidx.fragment.app.Fragment
+ import androidx.fragment.app.FragmentManager
+ import com.example.sokdaksokdak.Login.LoginFragment
+ import com.example.sokdaksokdak.database.AppDatabase
+ import com.example.sokdaksokdak.databinding.ActivityPolaNaviBinding
+ import com.example.sokdaksokdak.writeDiary.DiaryFragment
++import com.google.android.gms.auth.api.signin.GoogleSignIn
++import com.google.android.gms.auth.api.signin.GoogleSignInClient
++import com.google.android.gms.auth.api.signin.GoogleSignInOptions
++import com.google.firebase.auth.FirebaseAuth
++import com.kakao.sdk.user.UserApiClient
+ 
+ private const val TAG_KEYWORD = "keyword_fragment"
+ private const val TAG_CALENDAR ="calender_fragment"
+@@ -18,14 +27,35 @@
+ 
+ class PolaNaviActivity : AppCompatActivity() {
+     private lateinit var binding : ActivityPolaNaviBinding
+-    private lateinit var db : AppDatabase
++    var auth : FirebaseAuth?= null
++
++
+     override fun onCreate(savedInstanceState: Bundle?) {
+         super.onCreate(savedInstanceState)
+         binding = ActivityPolaNaviBinding.inflate(layoutInflater)
+         setContentView(binding.root)
+ 
++        //구글 계정 가져옴(없으면 currentUser == null)
++        auth = FirebaseAuth.getInstance()
++        val currentUser = auth?.currentUser
+ 
+-        setFragment(TAG_LOGIN, LoginFragment())
++        //카카오 로그인 확인 및 카카오 구글 둘 다 로그인 안되어있으면 로그인페이지, 아니면 일기작성 페이지로 이동
++        UserApiClient.instance.accessTokenInfo { tokenInfo, error ->
++            if (error != null) {
++                Log.d("로그인 화면", "아직 카카오 로그인 안함")
++                if(currentUser != null){
++                    Log.d("로그인 화면", "이미 구글 로그인되어있음")
++                    setFragment(TAG_DIARY,DiaryFragment())
++                }else{
++                    Log.d("로그인 화면", "아직 구글 로그인 안함")
++                    setFragment(TAG_LOGIN, LoginFragment())
++                }
++            } else if (tokenInfo != null) {
++                Log.d("로그인 화면", "이미 카카오 로그인되어있음")
++                setFragment(TAG_DIARY,DiaryFragment())
++            }
++        }
++
+         binding.navigationView.setOnItemSelectedListener { item->
+             when(item.itemId){
+                 R.id.calendarFragment->{
+@@ -47,12 +77,12 @@
+     }
+ 
+     
+-    private fun setFragment(tag:String, fragment: Fragment){
+-        val manager:FragmentManager = supportFragmentManager
++    private fun setFragment(tag:String, fragment: Fragment) {
++        val manager: FragmentManager = supportFragmentManager
+         val fragTransaction = manager.beginTransaction()
+ 
+-        if(manager.findFragmentByTag(tag)==null){
+-            fragTransaction.add(R.id.mainFrameLayout,fragment,tag)
++        if (manager.findFragmentByTag(tag) == null) {
++            fragTransaction.add(R.id.mainFrameLayout, fragment, tag)
+         }
+ 
+         val keyword = manager.findFragmentByTag(TAG_KEYWORD)
+@@ -62,11 +92,11 @@
+         val login = manager.findFragmentByTag(TAG_LOGIN)
+         val theme = manager.findFragmentByTag(TAG_THEME)
+ 
+-        if (calendar != null){
++        if (calendar != null) {
+             fragTransaction.hide(calendar)
+         }
+ 
+-        if (diary != null){
++        if (diary != null) {
+             fragTransaction.hide(diary)
+         }
+ 
+@@ -75,36 +105,27 @@
+         }
+ 
+         if (tag == TAG_CALENDAR) {
+-            if (calendar!=null){
++            if (calendar != null) {
+                 fragTransaction.show(calendar)
+             }
+-        }
+-        else if (tag == TAG_DIARY) {
++        } else if (tag == TAG_DIARY) {
+             if (diary != null) {
+                 fragTransaction.show(diary)
+             }
+-        }
+-
+-        else if (tag == TAG_MY_PAGE){
+-            if (mypage != null){
++        } else if (tag == TAG_MY_PAGE) {
++            if (mypage != null) {
+                 fragTransaction.show(mypage)
+             }
+-        }
+-
+-        else if(tag== TAG_KEYWORD){
+-            if(keyword!=null){
++        } else if (tag == TAG_KEYWORD) {
++            if (keyword != null) {
+                 fragTransaction.show(keyword)
+             }
+-        }
+-
+-        else if(tag== TAG_LOGIN){
+-            if(login!=null){
++        } else if (tag == TAG_LOGIN) {
++            if (login != null) {
+                 fragTransaction.show(login)
+             }
+-        }
+-
+-        else if(tag== TAG_THEME){
+-            if(theme!=null){
++        } else if (tag == TAG_THEME) {
++            if (theme != null) {
+                 fragTransaction.show(theme)
+             }
+         }
+diff --git a/.idea/shelf/Uncommitted_changes_before_Checkout_at_2022-11-12_오후_11_07_[Changes]1/shelved.patch b/.idea/shelf/Uncommitted_changes_before_Checkout_at_2022-11-12_오후_11_07_[Changes]1/shelved.patch
+deleted file mode 100644
