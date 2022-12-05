@@ -32,12 +32,27 @@ class WriteDiaryViewModel(application: Application): AndroidViewModel(applicatio
         }
     }
 
+    /** showKeyword
+     * keyword 만 갱신 된 상태일 때
+     *
+     * 1. 오늘 날짜에 해당하는 keyword 가져오기
+     * 2. 가져온 keyword 가
+     *    2.1. 초기 값일 때 - random 으로 키워드 가져오기
+     *         2.1.1. 가져온 keyword DB 에 update
+     *    2.2. 이미 갱신된 값일 때 - 바로 반환
+     * 3. 화면에 keyword 표시
+     *
+     * */
     public fun showKeyword(): String{
         var keywordDB = writeDiary.getKeyword()
 
         println("현재 저장 keyword: " + keywordDB)
 
         return if (keywordDB == "키워드를 선택하세요."){
+            // TODO: 키워드 추천 여부
+            //  1. SharedPreference 에서 사용자의 키워드 추천 여부 확인
+            //     1.1 추천 - random 값 가져오기
+            //     1.2 비추천 - "키워드를 입력하세요."로 수정
             println("Get Random Keyword")
             getRandomKeyword()
         } else{
@@ -62,9 +77,9 @@ class WriteDiaryViewModel(application: Application): AndroidViewModel(applicatio
         writeDiary.deleteData()
     }
 
-    /*fun setKeyword(keyword: String) {
-        writeDiary.setKeyword(keyword)
-    }*/
+    fun setKeyword(keyword: String) {
+        writeDiary.updateKeyword(keyword)
+    }
 
 
 
