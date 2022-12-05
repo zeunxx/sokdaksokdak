@@ -2,6 +2,7 @@ package com.example.sokdaksokdak
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -10,6 +11,8 @@ import com.example.sokdaksokdak.Login.LoginFragment
 import com.example.sokdaksokdak.database.AppDatabase
 import com.example.sokdaksokdak.databinding.ActivityPolaNaviBinding
 import com.example.sokdaksokdak.writeDiary.DiaryFragment
+import com.google.firebase.auth.FirebaseAuth
+import com.kakao.sdk.user.UserApiClient
 
 
 private const val TAG_DIARY = "diary_fragment"
@@ -19,9 +22,9 @@ private const val TAG_THEME = "theme_change_fragment"
 
 class PolaNaviActivity : AppCompatActivity() {
     private lateinit var binding : ActivityPolaNaviBinding
-    private lateinit var db : AppDatabase
     var currentTheme = R.style.AppPolaTheme
     private lateinit var pref: DefaultPreferenceManager
+    var auth : FirebaseAuth?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,10 +38,26 @@ class PolaNaviActivity : AppCompatActivity() {
         binding = ActivityPolaNaviBinding.inflate(layoutInflater)
 
 
-        db = AppDatabase.getInstance(applicationContext)!!
+        //구글 계정 가져옴(없으면 currentUser == null)
+        auth = FirebaseAuth.getInstance()
+        val currentUser = auth?.currentUser
 
-
-        setFragment(TAG_LOGIN, LoginFragment())
+        //카카오 로그인 확인 및 카카오 구글 둘 다 로그인 안되어있으면 로그인페이지, 아니면 일기작성 페이지로 이동
+        UserApiClient.instance.accessTokenInfo { tokenInfo, error ->
+            if (error != null) {
+                Log.d("로그인 화면", "아직 카카오 로그인 안함")
+                if(currentUser != null){
+                    Log.d("로그인 화면", "이미 구글 로그인되어있음")
+                    setFragment(TAG_DIARY,DiaryFragment())
+                }else{
+                    Log.d("로그인 화면", "아직 구글 로그인 안함")
+                    setFragment(TAG_LOGIN, LoginFragment())
+                }
+            } else if (tokenInfo != null) {
+                Log.d("로그인 화면", "이미 카카오 로그인되어있음")
+                setFragment(TAG_DIARY,DiaryFragment())
+            }
+        }
 
         binding.navigationView.setOnItemSelectedListener { item->
             when(item.itemId){

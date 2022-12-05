@@ -5,6 +5,6 @@
         android:state_checked="true"/>
 
     <item
-        android:color="@color/pola_white"
+        android:color="@color/pola_primary"
         android:state_checked="false"/>
 </selector>

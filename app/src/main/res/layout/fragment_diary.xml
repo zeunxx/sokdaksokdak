@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     android:background="?attr/android:windowBackground"
     android:orientation="vertical"
     tools:context=".writeDiary.DiaryFragment">
@@ -110,6 +111,20 @@
                 android:scaleType="fitXY"
                 android:src="?attr/tape" />
 
+            <EditText
+                android:id="@+id/keywordEditView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/keywordImgView"
+                android:layout_alignTop="@+id/keywordImgView"
+                android:layout_alignRight="@+id/keywordImgView"
+                android:layout_alignBottom="@+id/keywordImgView"
+                android:gravity="center"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:text="시험"
+                android:textColor="@color/pola_day_gray"
+                android:visibility="visible"/>
             <TextView
                 android:id="@+id/keywordTextView"
                 android:layout_width="match_parent"
@@ -119,10 +134,13 @@
                 android:layout_alignRight="@+id/keywordImgView"
                 android:layout_alignBottom="@+id/keywordImgView"
                 android:gravity="center"
-                android:text="오늘의 키워드"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:text="시험"
                 android:textColor="@color/pola_day_gray"
-                android:textSize="22dp"
-                android:textStyle="bold" />
+                android:visibility="gone"/>
+
+
         </RelativeLayout>
 
         <EditText
