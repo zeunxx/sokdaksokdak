@@ -46,7 +46,7 @@ class MypageFragment : Fragment() {
             if (error != null) {
                 //google
                 var gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestIdToken(getString(R.string.default_web_client_id))
+                    .requestIdToken("72536997949-mgi6or994u3rn0bfnseto9ucpnd2bdft.apps.googleusercontent.com")
                     .requestEmail()
                     .build()
                 googleSignInClient = context?.let { GoogleSignIn.getClient(it, gso) }
