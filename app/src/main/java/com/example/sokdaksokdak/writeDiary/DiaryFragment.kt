@@ -1,8 +1,10 @@
 package com.example.sokdaksokdak.writeDiary
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -60,6 +62,11 @@ class DiaryFragment : Fragment() {
          * keyword & 내용 모두 작성 완료된 상태라면
          * EditText 가 아닌 TextView 로 화면에 표시
          * */
+
+        val shared = requireActivity().getSharedPreferences("keyword", Context.MODE_PRIVATE)
+        val key = shared.getBoolean("isKeyword",true)
+        Log.i("키워드 추천 여부", key.toString())
+
         if (writeDiaryViewModel.checkDiaryCompleted()){
             // 작성 완료 버튼 없는 것으로 취급
             binding.diaryDoneBtn.visibility = View.GONE
@@ -71,13 +78,13 @@ class DiaryFragment : Fragment() {
 
             binding.keywordEditView.visibility = View.GONE
             binding.keywordTextView.visibility = View.VISIBLE
-            binding.keywordTextView.setText(writeDiaryViewModel.showKeyword())
+            binding.keywordTextView.setText(writeDiaryViewModel.showKeyword(key))
         } else {
             // showKeyword
-            binding.keywordEditView.setText(writeDiaryViewModel.showKeyword())
+            binding.keywordEditView.setText(writeDiaryViewModel.showKeyword(key))
 
-            // TODO: 추천 키워드를 화면에 표시하는 것까지는 clear.
-            //       -> 사용자가 keyword 를 수정(또는 새로 입력)했을 때
+            // 추천 키워드를 화면에 표시
+            // 사용자가 keyword 를 수정(또는 새로 입력)했을 때 -> 실시간 DB update
             binding.keywordEditView.addTextChangedListener(object : TextWatcher {
                 override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 }
@@ -116,7 +123,7 @@ class DiaryFragment : Fragment() {
 
                 binding.keywordEditView.visibility = View.GONE
                 binding.keywordTextView.visibility = View.VISIBLE
-                binding.keywordTextView.setText(writeDiaryViewModel.showKeyword())
+                binding.keywordTextView.setText(writeDiaryViewModel.showKeyword(key))
 
 
             }
