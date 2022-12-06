@@ -10,7 +10,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 
 @Database(
     entities = [User::class, Diary::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 
@@ -28,7 +28,7 @@ abstract class AppDatabase: RoomDatabase() {
                     instance = Room.databaseBuilder(
                         context.applicationContext,
                         AppDatabase::class.java,
-                        "test"
+                        "sokdak_database1"
                     )
                         .build()
                 }
