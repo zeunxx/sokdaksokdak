@@ -1,17 +1,22 @@
 package com.example.sokdaksokdak.writeDiary
 
+import android.content.Intent
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
+import androidx.fragment.app.Fragment
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.example.sokdaksokdak.databinding.FragmentDiaryBinding
+import androidx.annotation.RequiresApi
 
+import androidx.lifecycle.ViewModelProvider
+import com.example.sokdaksokdak.Diary.CalendarFragment
+import com.example.sokdaksokdak.databinding.FragmentDiaryBinding
+import java.time.LocalDate
 
 class DiaryFragment : Fragment() {
     private lateinit var binding: FragmentDiaryBinding
@@ -22,11 +27,17 @@ class DiaryFragment : Fragment() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View? {
         binding = FragmentDiaryBinding.inflate(inflater, container, false)
+
+        val Date = LocalDate.now()
+        binding.monthTextView.text = Date.toString().split("-")[1]
+        binding.dayTextView.text = Date.toString().split("-")[2]
+
 
         writeDiaryViewModel = ViewModelProvider(this).get(WriteDiaryViewModel::class.java)
 
@@ -127,6 +138,37 @@ class DiaryFragment : Fragment() {
 
 
             }
+
+        }
+        binding.btnforCal.setOnClickListener{
+            val datePickerFragment = CalendarFragment()
+            val supportFragment = requireActivity().supportFragmentManager
+            supportFragment.setFragmentResultListener(
+                "KEY",
+                viewLifecycleOwner
+            ){
+                    resultKey, bundle->
+                if(resultKey == "KEY"){
+
+                    val selectedDate = bundle.getString("SELECTED_DATE")?.split("-")
+
+                    val day = selectedDate?.get(0)
+                    val month = selectedDate?.get(1)
+                    if (day != null) {
+                        Log.e("log", day)
+                    }
+                    if (month != null) {
+                        Log.e("log", month)
+                    }
+
+                    binding.monthTextView.text = month
+                    binding.dayTextView.text = day
+                }
+                else{
+                    Log.e("log", "fail")
+                }
+            }
+            datePickerFragment.show(supportFragment,"CalendarFragment")
 
         }
 
