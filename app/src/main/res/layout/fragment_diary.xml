@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    android:background="?attr/android:windowBackground"
+    android:background="?attr/back_img"
     android:orientation="vertical"
     tools:context=".writeDiary.DiaryFragment">
 

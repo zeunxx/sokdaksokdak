@@ -2,6 +2,7 @@ package com.example.sokdaksokdak.writeDiary
 
 import android.content.Intent
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,10 +11,12 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 
 import androidx.lifecycle.ViewModelProvider
 import com.example.sokdaksokdak.Diary.CalendarFragment
 import com.example.sokdaksokdak.databinding.FragmentDiaryBinding
+import java.time.LocalDate
 
 class DiaryFragment : Fragment() {
     private lateinit var binding: FragmentDiaryBinding
@@ -24,11 +27,17 @@ class DiaryFragment : Fragment() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentDiaryBinding.inflate(inflater, container, false)
+
+        val Date = LocalDate.now()
+        binding.monthTextView.text = Date.toString().split("-")[1]
+        binding.dayTextView.text = Date.toString().split("-")[2]
+
 
         writeDiaryViewModel = ViewModelProvider(this).get(WriteDiaryViewModel::class.java)
 
