@@ -45,20 +45,11 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
                 android:textSize="30dp"
+                android:gravity="center"
                 android:layout_margin="5dp"
                 android:textStyle="bold"
                 android:textColor="@color/pola_day_gray"
                 android:text="성해은"/>
-
-            <TextView
-                android:id="@+id/mypage_birth"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:layout_weight="4"
-                android:text="2000.00.00"
-                android:textColor="@color/pola_day_gray"
-                android:textSize="20dp" />
 
 
         </LinearLayout>
@@ -79,7 +70,7 @@
                 android:textSize="18dp"
                 android:layout_margin="10dp"
                 android:textColor="@color/pola_day_gray"
-                android:text="키워드 영구 비추천"/>
+                android:text="키워드 영구 추천"/>
 
             <Switch
                 android:id="@+id/keywordToggleBtn"
