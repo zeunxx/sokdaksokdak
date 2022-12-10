@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
-    android:background="?attr/back_img"
+    android:background="@color/white"
     android:orientation="vertical"
     tools:context=".writeDiary.DiaryFragment">
 
@@ -121,6 +120,7 @@
                 android:layout_alignRight="@+id/keywordImgView"
                 android:layout_alignBottom="@+id/keywordImgView"
                 android:gravity="center"
+                android:background="@null"
                 android:textSize="20dp"
                 android:textStyle="bold"
                 android:hint="키워드를 입력하세요."
@@ -151,6 +151,7 @@
             android:gravity="center"
             android:layout_marginLeft="65dp"
             android:layout_marginRight="65dp"
+            android:background="@null"
             android:textColor="@color/pola_day_gray"
             android:fontFamily="@font/custom_font"
             android:textColorHint="@color/pola_navi"

@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.sokdaksokdak.databinding.FragmentDiaryBinding
 import com.example.sokdaksokdak.databinding.FragmentMypageBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -55,7 +54,7 @@ class MypageFragment : Fragment() {
                 auth = FirebaseAuth.getInstance()
 
                 binding.mypageName.text = FirebaseAuth.getInstance().currentUser?.displayName
-                binding.mypageBirth.visibility = View.INVISIBLE
+//                binding.mypageBirth.visibility = View.INVISIBLE
                 // 로그아웃
                 binding.logoutBtn.setOnClickListener {
                     FirebaseAuth.getInstance().signOut()
@@ -86,9 +85,9 @@ class MypageFragment : Fragment() {
                         var birth = user.kakaoAccount?.birthday.toString()
                         //var birthyear = user.kakaoAccount?.birthyear.toString()
                         Log.d("이름","이름 : "+name)
-                        binding.mypageBirth.visibility = View.VISIBLE
+//                        binding.mypageBirth.visibility = View.VISIBLE
                         binding.mypageName.text = name
-                        binding.mypageBirth.text = birth
+//                        binding.mypageBirth.text = birth
                     }
                 }
                 // 로그아웃

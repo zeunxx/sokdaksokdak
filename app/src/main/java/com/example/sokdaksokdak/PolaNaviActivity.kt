@@ -3,6 +3,7 @@ package com.example.sokdaksokdak
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -49,17 +50,23 @@ class PolaNaviActivity : AppCompatActivity() {
                 if(currentUser != null){
                     Log.d("로그인 화면", "이미 구글 로그인되어있음")
                     setFragment(TAG_DIARY,DiaryFragment())
+                    binding.navigationView.visibility = View.VISIBLE
                 }else{
+                    binding.navigationView.visibility = View.GONE
                     Log.d("로그인 화면", "아직 구글 로그인 안함")
                     setFragment(TAG_LOGIN, LoginFragment())
                 }
             } else if (tokenInfo != null) {
                 Log.d("로그인 화면", "이미 카카오 로그인되어있음")
                 setFragment(TAG_DIARY,DiaryFragment())
+                binding.navigationView.visibility = View.VISIBLE
             }
         }
+        binding.navigationView.visibility = View.VISIBLE
 
+        // 네이게이션 바에 fragment 연결
         binding.navigationView.setOnItemSelectedListener { item->
+            // 메뉴 선택시 해당 화면 setting
             when(item.itemId){
                 R.id.diaryFragment->{
                     setFragment(TAG_DIARY, DiaryFragment())
@@ -100,6 +107,7 @@ class PolaNaviActivity : AppCompatActivity() {
     }
 
 
+    // fragment setting 함수
     private fun setFragment(tag: String, fragment: Fragment) {
         val manager: FragmentManager = supportFragmentManager
         val fragTransaction = manager.beginTransaction()
