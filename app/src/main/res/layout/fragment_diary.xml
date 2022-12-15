@@ -158,7 +158,7 @@
             android:hint="일기를 작성하세요."
             android:visibility="visible"
 
-            android:layout_weight="11"/>
+            android:layout_weight="12"/>
 
         <TextView
             android:id="@+id/diaryTextView"
@@ -173,7 +173,7 @@
             android:textSize="9pt"
             android:visibility="gone"
 
-            android:layout_weight="11"/>
+            android:layout_weight="12"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -192,7 +192,7 @@
         <Space
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="5"/>
+            android:layout_weight="3.5"/>
 
 
     </LinearLayout>

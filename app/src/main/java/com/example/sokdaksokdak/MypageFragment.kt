@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.sokdaksokdak.Factory.DefaultPreferenceManager
 import com.example.sokdaksokdak.databinding.FragmentMypageBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -22,6 +23,7 @@ class MypageFragment : Fragment() {
     var auth : FirebaseAuth?= null
     var googleSignInClient : GoogleSignInClient?= null
     lateinit var prefs: SharedPreferences
+    private lateinit var pref: DefaultPreferenceManager
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,6 +41,13 @@ class MypageFragment : Fragment() {
             val intent = Intent(activity,ThemeChangeActivity::class.java)
             startActivity(intent)
 
+        }
+
+        // 현재 모드 화면에 출력
+        pref = DefaultPreferenceManager(requireContext())
+        when(pref.getThemeType()){
+            "pola_theme" ->binding.currentThemeTextView.text="폴라로이드 테마"
+            "clover_theme" ->binding.currentThemeTextView.text="네잎클로버 테마"
         }
 
         UserApiClient.instance.accessTokenInfo { tokenInfo, error ->
