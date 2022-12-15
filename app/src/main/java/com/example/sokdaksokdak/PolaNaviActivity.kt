@@ -51,9 +51,9 @@ class PolaNaviActivity : AppCompatActivity() {
                     setFragment(TAG_DIARY,DiaryFragment())
                     binding.navigationView.visibility = View.VISIBLE
                 }else{
-//                    binding.navigationView.visibility = View.GONE
+                    binding.navigationView.visibility = View.GONE
                     Log.d("로그인 화면", "아직 구글 로그인 안함")
-//                    setFragment(TAG_LOGIN, LoginFragment())
+                    setFragment(TAG_LOGIN, LoginFragment())
                 }
             } else if (tokenInfo != null) {
                 Log.d("로그인 화면", "이미 카카오 로그인되어있음")
