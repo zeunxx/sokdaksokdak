@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import com.example.sokdaksokdak.database.AppDatabase
 
 class WriteDiaryViewModel(application: Application): AndroidViewModel(application) {
-    private var recommendKeyword = RecommendKeyword()
+    var recommendKeyword = RecommendKeyword()
     private var writeDiary = WriteDiary(application)
 
     public fun insertData() {
