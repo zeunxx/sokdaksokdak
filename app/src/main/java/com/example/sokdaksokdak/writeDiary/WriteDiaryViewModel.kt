@@ -87,9 +87,9 @@ class WriteDiaryViewModel(application: Application): AndroidViewModel(applicatio
         return keyword
     }
 
-    fun deleteData() {
+    /*fun deleteData() {
         writeDiary.deleteData()
-    }
+    }*/
 
     fun setKeyword(keyword: String) {
         writeDiary.updateKeyword(keyword)

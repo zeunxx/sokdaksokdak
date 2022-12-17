@@ -70,13 +70,13 @@ class DiaryRepository(application: Application) {
         return isExists
     }
 
-    fun deleteData() {
+    /*fun deleteData() {
         val r = Runnable {
             diaryDao.deleteData()
         }
         val thread = Thread(r)
         thread.start()
-    }
+    }*/
 
     fun getDiaryContent(): String {
         var diaryContent: String = "Get Today Diary Content"

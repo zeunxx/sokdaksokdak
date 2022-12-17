@@ -15,9 +15,9 @@ class WriteDiary(application: Application) {
         this.content = "일기를 작성하세요."
     }
 
-    public fun createTodayDiary() {
+    /*public fun createTodayDiary() {
         insertDiary()
-    }
+    }*/
 
     public fun getKeyword(): String{
         var keywordDB = repository.getTodayKeyword() // DB 에서 날짜로 keyword 가져오기
@@ -51,10 +51,9 @@ class WriteDiary(application: Application) {
 
     }
 
-    fun deleteData() {
+    /*fun deleteData() {
         repository.deleteData()
-
-    }
+    }*/
 
     fun getDiaryContent(): String {
         return repository.getDiaryContent()
