@@ -30,7 +30,6 @@ class DiaryRepository(application: Application) {
         thread.start()
     }
 
-    // TODO: 반환이 제대로 안 되는 문제
     fun getTodayKeyword(): String {
         var todayKeyword: String = "Get Today Keyword"
 
