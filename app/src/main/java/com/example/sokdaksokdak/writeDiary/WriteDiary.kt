@@ -40,7 +40,7 @@ class WriteDiary(application: Application) {
         repository.insertData("키워드를 선택하세요.", "일기를 작성하세요.")
     }
 
-    // TODO: 일기 작성 완료했을 때 update 하는 함수
+    // 일기 작성 완료했을 때 update 하는 함수
     public fun updateDiary(){
         repository.updateData(this.keyword, this.content)
         // DataBase 에 keyword 혹은 content update
