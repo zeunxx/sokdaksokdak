@@ -41,6 +41,9 @@ class DiaryFragment : Fragment() {
 
         writeDiaryViewModel = ViewModelProvider(this).get(WriteDiaryViewModel::class.java)
 
+        // Diary Table 비우기 - 확인을 위함
+        // writeDiaryViewModel.deleteData()
+
         // 사용자의 keyword 추천 여부 반영 - 예외 처리
 
         // 앱 실행 시, 현재 날짜에 대한 DB Data 존재 및 작성 완료 상태 확인
