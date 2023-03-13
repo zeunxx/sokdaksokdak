@@ -4,6 +4,7 @@
 
 #### 개인적 회고록 - 노션
 
+https://www.notion.so/sokdaksokdak-3e2a4e79770a4907a6cb530e927b7704?pvs=4
 
 <br>
 
